@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danica Manuel Retail Loft | Baby & Kids Essentials</title>
+    <meta name="description" content="Your trusted store for baby and kids essentials in Las Piñas City, Metro Manila. Safe, parent-approved products and friendly service.">
+    <link rel="icon" type="image/png" href="FAVICON.png">
+    <style>
+        :root {
+            --brand-black: #191919;
+            --brand-white: #fff;
+            --brand-orange: #ff4d00;
+            --brand-gray: #f6f6f6;
+            --brand-blue: #377892;
+            --brand-lightblue: #61b7d6;
+            --brand-popup-bg: #244764;
+            --brand-popup-accent: #e3f3fb;
+            --brand-font: 'Montserrat', Arial, sans-serif;
+            --cart-shadow: 0 4px 24px rgba(255,77,0,0.10);
+        }
+        @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
+        html { font-size: 19px; }
+        * { box-sizing: border-box; }
+        body {
+            font-family: var(--brand-font);
+            background-color: var(--brand-gray);
+            margin: 0;
+            color: #1a1a1a;
+            font-size: 1.13em;
+        }
+        header {
+            background: var(--brand-white);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0.5em 1em;
+            font-size: 1.08em;
+        }
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75em;
+        }
+        .navbar-logo img {
+            width: 55px;
+            height: 55px;
+            object-fit: contain;
+        }
+        .navbar-title {
+            font-weight: 700;
+            font-size: 1.4em;
+            color: var(--brand-black);
+            letter-spacing: 1px;
+        }
+        nav {
+            flex: 1;
+            display: flex;
+            justify-content: flex-end;
+            position: relative;
+            font-size: 1.08em;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 2em;
+            margin: 0;
+            padding: 0;
+            align-items: center;
+        }
+        nav ul li a {
+            color: var(--brand-black);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5em 0.2em;
+            font-size: 1.09em;
+            transition: color 0.2s;
+        }
+        nav ul li a:hover, nav ul li a.active {
+            color: var(--brand-orange);
+        }
+        .cart-btn {
+            position: relative;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-left: 1em;
+            z-index: 999;
+        }
+        .cart-icon {
+            width: 31px;
+            height: 31px;
+            filter: invert(18%) sepia(97%) saturate(2529%) hue-rotate(0deg) brightness(97%) contrast(100%);
+            transition: transform 0.15s;
+        }
+        .cart-btn:hover .cart-icon {
+            transform: scale(1.12);
+        }
+        .cart-count {
+            position: absolute;
+            top: -6px;
+            right: -8px;
+            background: var(--brand-orange);
+            color: #fff;
+            font-size: 1em;
+            border-radius: 50%;
+            padding: 2px 8px;
+            min-width: 22px;
+            text-align: center;
+            font-weight: 700;
+        }
+        /* Cart Popup Styles */
+        .cart-popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(37,52,71,0.45);
+            z-index: 2002;
+        }
+        .cart-popup {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: fixed;
+            top: 56px;
+            right: 32px;
+            width: 350px;
+            max-width: 95vw;
+            background: var(--brand-popup-bg);
+            box-shadow: 0 8px 32px rgba(37,52,71,0.15);
+            border-radius: 17px;
+            padding: 1.6em 1.3em 1.3em 1.3em;
+            z-index: 2003;
+            animation: cartPopupFadeIn 0.23s;
+        }
+        @keyframes cartPopupFadeIn {
+            from { opacity: 0; transform: translateY(-25px);}
+            to { opacity: 1; transform: translateY(0);}
+        }
+        .cart-popup-title {
+            font-size: 1.28em;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1em;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .cart-popup-list {
+            width: 100%;
+            margin-bottom: 1em;
+        }
+        .cart-popup-list ul {
+            list-style: none;
+            margin: 0; padding: 0;
+        }
+        .cart-popup-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.45em;
+            font-size: 1.07em;
+            color: #fff;
+        }
+        .cart-popup-total {
+            width: 100%;
+            background: var(--brand-popup-accent);
+            border-radius: 7px;
+            padding: 0.9em 1em;
+            text-align: right;
+            font-weight: 700;
+            color: var(--brand-blue);
+            font-size: 1.15em;
+            margin-bottom: 1.2em;
+        }
+        .cart-popup-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1em;
+            width: 100%;
+            justify-content: center;
+        }
+        .cart-popup-checkout-btn {
+            background: var(--brand-lightblue);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 0.75em 2em;
+            font-size: 1.12em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .cart-popup-checkout-btn:hover {
+            background: #fff;
+            color: var(--brand-blue);
+            border: 1px solid var(--brand-blue);
+        }
+        .cart-popup-close-btn {
+            background: none;
+            border: none;
+            color: #fff;
+            font-weight: 700;
+            font-size: 1.12em;
+            cursor: pointer;
+            margin-top: 1em;
+        }
+        .cart-popup-empty {
+            color: #c8e0ea;
+            width: 100%;
+            text-align: center;
+            margin-bottom: 1.2em;
+            font-size: 1em;
+        }
+        @media (max-width: 600px) {
+            .cart-popup {
+                right: 5vw;
+                left: 5vw;
+                width: auto;
+                min-width: 0;
+                max-width: 98vw;
+                padding: 1em 0.5em 1em 0.5em;
+            }
+        }
+        .burger-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            height: 36px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-left: 1em;
+        }
+        .burger-bar {
+            width: 26px;
+            height: 3px;
+            background: var(--brand-black);
+            margin: 4px 0;
+            border-radius: 2px;
+            transition: all 0.25s;
+        }
+        .burger-btn.open .burger-bar:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+        .burger-btn.open .burger-bar:nth-child(2) {
+            opacity: 0;
+        }
+        .burger-btn.open .burger-bar:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+        @media (max-width: 850px) {
+            nav ul {
+                gap: 1.1em;
+            }
+        }
+        @media (max-width: 650px) {
+            .navbar-logo img { width: 42px; height: 42px;}
+            .navbar-title { font-size: 1.1em; }
+            nav ul {
+                position: absolute;
+                top: 48px;
+                right: 0;
+                background: var(--brand-white);
+                flex-direction: column;
+                width: 180px;
+                box-shadow: 0 6px 24px rgba(0,0,0,0.09);
+                border-radius: 0 0 12px 12px;
+                display: none;
+                z-index: 999;
+                padding: 1em 0.5em;
+            }
+            nav ul.open {
+                display: flex;
+            }
+            .burger-btn { display: flex; }
+        }
+        .hero {
+            background: linear-gradient(90deg, #fff 65%, var(--brand-orange) 35%);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            padding: 2.5em 1em 2em 1em;
+            font-size: 1.15em;
+        }
+        .hero-content {
+            flex: 1 1 380px;
+            max-width: 540px;
+            padding-right: 2em;
+        }
+        .hero-content h1 {
+            font-size: 2.45em;
+            margin: 0 0 0.3em 0;
+            font-weight: 700;
+            color: var(--brand-black);
+        }
+        .hero-content h2 {
+            font-size: 1.35em;
+            margin: 0 0 1em 0;
+            letter-spacing: 0.5px;
+            color: var(--brand-orange);
+            font-weight: 600;
+        }
+        .hero-content p {
+            font-size: 1.2em;
+            margin-bottom: 1.6em;
+            color: #333;
+            line-height: 1.7;
+        }
+        .hero-content .cta-btn {
+            background: var(--brand-orange);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 0.75em 2.2em;
+            font-size: 1.12em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .hero-content .cta-btn:hover {
+            background: #fc8128;
+        }
+        .hero-logo {
+            flex: 0 1 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1em 0;
+        }
+        .hero-logo img {
+            width: 220px;
+            max-width: 98vw;
+            height: auto;
+        }
+        @media (max-width: 950px) {
+            .hero {
+                flex-direction: column;
+                padding: 2em 1em 1.5em 1em;
+            }
+            .hero-content, .hero-logo {
+                max-width: 100%;
+                padding: 0.5em 0;
+            }
+            .hero-content {
+                padding-right: 0;
+            }
+        }
+        @media (max-width: 650px) {
+            .hero-logo img { width: 90vw; max-width: 150px; }
+        }
+        .features {
+            background: var(--brand-gray);
+            padding: 2.2em 0 1.7em 0;
+        }
+        .features-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.5em;
+            max-width: 1150px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+        .feature-item {
+            background: #fff;
+            border-radius: 11px;
+            box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+            padding: 1.3em 1.35em;
+            flex: 1 1 220px;
+            max-width: 260px;
+            text-align: center;
+            margin: 0.5em 0;
+            font-size: 1.09em;
+        }
+        .feature-title {
+            font-weight: 700;
+            color: var(--brand-orange);
+            margin-bottom: 0.2em;
+            font-size: 1.13em;
+        }
+        .feature-desc {
+            font-size: 1.09em;
+            color: #333;
+        }
+        @media (max-width: 900px) {
+            .features-list {
+                flex-direction: column;
+                gap: 1em;
+                align-items: center;
+            }
+        }
+        .categories {
+            background: var(--brand-white);
+            padding: 2.2em 1em 1.5em 1em;
+        }
+        .categories-title {
+            text-align: center;
+            font-size: 1.75em;
+            font-weight: 700;
+            color: var(--brand-black);
+            margin-bottom: 1.2em;
+        }
+        .categories-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+            gap: 2em;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .category-card {
+            background: var(--brand-gray);
+            border-radius: 18px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.12);
+            padding: 2em 1.3em 1.8em 1.3em;
+            min-height: 480px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            transition: box-shadow 0.2s, transform 0.2s;
+            font-size: 1.08em;
+        }
+        .category-card:hover {
+            box-shadow: 0 12px 36px rgba(255,77,0,0.13);
+            transform: translateY(-5px) scale(1.03);
+        }
+        .category-imgbox {
+            width: 115px;
+            height: 115px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 3px 12px rgba(255,77,0,0.07);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1em;
+            overflow: hidden;
+        }
+        .category-imgbox img {
+            width: 95px;
+            height: 95px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+        .category-title {
+            font-weight: 700;
+            color: var(--brand-orange);
+            margin-bottom: 0.35em;
+            font-size: 1.22em;
+            text-align: center;
+        }
+        .category-desc {
+            font-size: 1.09em;
+            color: #222;
+            text-align: center;
+            margin-bottom: 1em;
+            line-height: 1.7;
+        }
+        .category-price {
+            font-weight: 700;
+            color: var(--brand-black);
+            font-size: 1.12em;
+            text-align: center;
+            margin-bottom: 1.3em;
+            background: #ffe5d3;
+            border-radius: 6px;
+            padding: 0.38em 1em;
+            display: inline-block;
+        }
+        .category-actions {
+            display: flex;
+            gap: 0.7em;
+            margin-top: auto;
+            align-items: center;
+            justify-content: center;
+        }
+        .category-btn {
+            background: var(--brand-orange);
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 0.67em 1.3em;
+            font-size: 1.07em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .category-btn:active, .category-btn:focus {
+            background: #fc8128;
+        }
+        .category-btn.checkout {
+            background: #191919;
+            color: #fff;
+        }
+        .category-btn.checkout:active, .category-btn.checkout:focus {
+            background: #333;
+        }
+        .category-added {
+            color: #54b054;
+            font-size: 1em;
+            margin-top: 0.7em;
+            font-weight: 600;
+        }
+        @media (max-width: 1050px) {
+            .categories-list {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 1.2em;
+            }
+            .category-card {
+                min-height: 410px;
+            }
+        }
+        @media (max-width: 700px) {
+            .categories-list {
+                grid-template-columns: 1fr;
+            }
+            .category-card {
+                min-height: 0;
+            }
+        }
+
+        /* New Style for Feedback Section (Form Based) */
+        .cart-section {
+            background: var(--brand-blue);
+            border-radius: 20px;
+            box-shadow: 0 6px 32px rgba(0,0,0,0.12);
+            margin: 2.5em auto 2.5em auto;
+            width: 97vw;
+            max-width: 460px;
+            padding: 2.2em 2em 2em 2em;
+            border: none;
+            font-size: 1.08em;
+            position: static;
+            left: unset;
+            bottom: unset;
+            transform: unset;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .cart-form-title {
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 1.15em;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .cart-form-label {
+            color: #c8e0ea;
+            font-weight: 600;
+            font-size: 1.09em;
+            margin-bottom: 0.3em;
+            margin-top: 1.1em;
+            display: block;
+        }
+        .cart-form-input, .cart-form-textarea {
+            width: 100%;
+            padding: 0.8em 1em;
+            border-radius: 7px;
+            border: none;
+            font-size: 1.08em;
+            margin-bottom: 1em;
+            background: #fff;
+            color: #191919;
+            font-family: var(--brand-font);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .cart-form-textarea {
+            height: 90px;
+            resize: vertical;
+        }
+        .cart-form-btn {
+            background: var(--brand-lightblue);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 0.75em 2em;
+            font-size: 1.15em;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1em;
+            transition: background 0.2s;
+        }
+        .cart-form-btn:hover {
+            background: #4ea0bd;
+        }
+        .cart-form-success {
+            color: #bff7c2;
+            background: #2d5d70;
+            border-radius: 6px;
+            font-size: 1.09em;
+            padding: 0.5em 1em;
+            margin-top: 0.7em;
+            text-align: center;
+            font-weight: 600;
+        }
+        @media (max-width: 700px) {
+            .cart-section {
+                width: 98vw;
+                max-width: 98vw;
+                padding: 1.3em 0.7em 1.3em 0.7em;
+            }
+        }
+        .contact-section {
+            background: var(--brand-gray);
+            padding: 2.2em 1em 1.5em 1em;
+            border-top: 1px solid #eee;
+            font-size: 1.09em;
+        }
+        .contact-title {
+            font-size: 1.22em;
+            font-weight: 700;
+            color: var(--brand-black);
+            margin-bottom: 0.7em;
+            text-align: center;
+        }
+        .contact-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2em;
+            justify-content: center;
+            margin-bottom: 1em;
+        }
+        .contact-details > div {
+            flex: 1 1 220px;
+            max-width: 320px;
+        }
+        .contact-data {
+            margin-bottom: 0.8em;
+            color: #222;
+            font-size: 1.09em;
+        }
+        .contact-data span {
+            font-weight: 600;
+            color: var(--brand-orange);
+        }
+        .contact-social {
+            display: flex;
+            gap: 1em;
+            justify-content: center;
+            margin-top: 0.5em;
+        }
+        .contact-social a {
+            color: var(--brand-orange);
+            font-size: 2em;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .contact-social a:hover {
+            color: #fc8128;
+        }
+        .footer {
+            background: var(--brand-black);
+            color: var(--brand-white);
+            padding: 2em 1em 1em 1em;
+            text-align: center;
+            font-size: 1.07em;
+        }
+        .footer-logo {
+            margin-bottom: 1.1em;
+        }
+        .footer-logo img {
+            width: 65px;
+            height: 65px;
+        }
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5em;
+            justify-content: center;
+            margin-bottom: 1.1em;
+        }
+        .footer-links a {
+            color: var(--brand-orange);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.09em;
+            transition: color 0.2s;
+        }
+        .footer-links a:hover {
+            color: #fff;
+        }
+        .footer-info {
+            font-size: 1.05em;
+            margin-bottom: 1em;
+        }
+        .footer-legal {
+            font-size: 0.99em;
+            color: #bdbdbd;
+        }
+        .footer-policies {
+            margin: 1.3em 0 0.7em 0;
+            font-size: 1.06em;
+            text-align: left;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .footer-policy-section {
+            margin-bottom: 1.1em;
+        }
+        .footer-policy-section h4 {
+            color: var(--brand-orange);
+            font-size: 1.07em;
+            margin-bottom: 0.35em;
+            font-weight: 700;
+        }
+        .footer-policy-section p {
+            margin: 0 0 0.3em 0;
+            color: #eaeaea;
+            line-height: 1.65;
+        }
+        @media (max-width: 700px) {
+            .footer-policies {
+                font-size: 1em;
+                padding: 0 0.5em;
+            }
+            .footer-links {
+                gap: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="navbar">
+            <div class="navbar-logo">
+                <img src="LOGO.png" alt="Danica Manuel Retail Loft Logo" width="55" height="55">
+                <span class="navbar-title">Danica Manuel Retail Loft</span>
+            </div>
+            <nav>
+                <ul id="main-nav">
+                    <li><a href="#home" class="active">Home</a></li>
+                    <li><a href="#about">About Us</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#cart">Cart</a></li>
+                </ul>
+                <button class="burger-btn" id="burgerBtn" aria-label="Menu" aria-expanded="false">
+                    <span class="burger-bar"></span>
+                    <span class="burger-bar"></span>
+                    <span class="burger-bar"></span>
+                </button>
+            </nav>
+            <button class="cart-btn" id="openCartPopup" aria-label="View Cart">
+                <!-- New cart SVG with better accessibility and style -->
+                <svg class="cart-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+                    <circle cx="16" cy="16" r="16" fill="#ff4d00"/>
+                    <path d="M10.5 10.5h11l-1.2 8.7c-.1.8-.8 1.3-1.6 1.3h-5.4c-.8 0-1.5-.5-1.6-1.3l-1.2-8.7z" fill="#fff"/>
+                    <circle cx="13" cy="23" r="1.3" fill="#fff"/>
+                    <circle cx="19" cy="23" r="1.3" fill="#fff"/>
+                </svg>
+                <span class="cart-count" id="cart-count">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- CART POPUP -->
+    <div class="cart-popup-overlay" id="cartPopupOverlay"></div>
+    <div class="cart-popup" id="cartPopup" style="display:none;">
+        <div class="cart-popup-title">Your Cart</div>
+        <div class="cart-popup-list" id="cartPopupList">
+            <ul id="cartPopupListItems"></ul>
+        </div>
+        <div class="cart-popup-total" id="cartPopupTotal"></div>
+        <div class="cart-popup-empty" id="cartPopupEmpty" style="display:none;">Your cart is empty.</div>
+        <div class="cart-popup-actions">
+            <button class="cart-popup-checkout-btn" id="cartPopupCheckoutBtn">Checkout</button>
+            <button class="cart-popup-close-btn" id="cartPopupCloseBtn">Close</button>
+        </div>
+    </div>
+    <!-- END CART POPUP -->
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1>Your Partner in Parenthood</h1>
+                <h2>Essentials for Baby, Toddler, & Growing Kids</h2>
+                <p>
+                    At Danica Manuel Retail Loft, we know how important every stage of your child’s growth is. From the very first days of newborn care to the energetic years of toddlerhood and beyond, our store is built to support Filipino families with only the best essentials. <br><br>
+                    Our collection features certified safe, trusted brands and locally sourced baby goods. Whether you’re shopping for everyday supplies, special gifts, or nursery upgrades, we offer affordable bundles and sulit finds that fit every budget. <br><br>
+                    Visit our clean, stroller-friendly store in Las Piñas or shop online 24/7. Our parent-friendly staff is always ready to help with advice and demos. Create a baby registry, find birthday giveaways, or just enjoy peace of mind knowing you’re getting authentic products at tamang presyo.<br><br>
+                    Join our community of happy parents—because at Danica Manuel Retail Loft, we treat every customer like family.
+                </p>
+                <a class="cta-btn" href="#products">Shop Now</a>
+            </div>
+            <div class="hero-logo">
+                <img src="LOGO.png" alt="Danica Manuel Retail Loft Logo">
+            </div>
+        </section>
+
+        <section class="features" id="about">
+            <div class="features-list">
+                <div class="feature-item">
+                    <div class="feature-title">Trusted Brands</div>
+                    <div class="feature-desc">Shop only certified and parent-approved products for peace of mind. All items are sourced from trusted local and international brands with safety certifications.</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-title">Affordable Bundles</div>
+                    <div class="feature-desc">Sulit finds and exclusive bundles for every stage of childhood. Find value packs for diapers, toys, and more to maximize your budget.</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-title">Parent-Friendly Staff</div>
+                    <div class="feature-desc">Expert advice and help from staff who understand your needs. Ask us about product demos, best picks, and local parenting tips.</div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-title">Clean & Stroller-Friendly</div>
+                    <div class="feature-desc">Shop in comfort—our store is safe, clean, and easy to navigate. Strollers welcome, and our aisles are designed for families.</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="categories" id="products">
+            <div class="categories-title">Product Categories</div>
+            <div class="categories-list">
+                <div class="category-card" data-category="newborn">
+                    <div class="category-imgbox">
+                        <img src="assets/newborn.jpg" alt="Newborn & Infant Essentials">
+                    </div>
+                    <div class="category-title">Newborn & Infant Essentials</div>
+                    <div class="category-desc">Diapers (NB to XL), organic wipes, hypoallergenic baby lotion & wash, nursing pillows, feeding bottles, pacifiers, and more. All newborn items are gentle, dermatologically tested, and safe for sensitive skin.</div>
+                    <div class="category-price">₱650</div>
+                    <div class="category-actions">
+                        <button class="category-btn add-to-cart" data-title="Newborn & Infant Essentials" data-price="650">Add to Cart</button>
+                        <button class="category-btn checkout" data-title="Newborn & Infant Essentials" data-price="650">Checkout</button>
+                    </div>
+                    <div class="category-added" style="display:none;"></div>
+                </div>
+                <div class="category-card" data-category="toddler">
+                    <div class="category-imgbox">
+                        <img src="assets/toddler.jpg" alt="Toddler Must-Haves">
+                    </div>
+                    <div class="category-title">Toddler Must-Haves</div>
+                    <div class="category-desc">Educational toys, play mats, spill-proof sippy cups, training pants, toddler utensils, and night diapers. Foster learning and self-feeding with our curated toddler picks for every milestone.</div>
+                    <div class="category-price">₱950</div>
+                    <div class="category-actions">
+                        <button class="category-btn add-to-cart" data-title="Toddler Must-Haves" data-price="950">Add to Cart</button>
+                        <button class="category-btn checkout" data-title="Toddler Must-Haves" data-price="950">Checkout</button>
+                    </div>
+                    <div class="category-added" style="display:none;"></div>
+                </div>
+                <div class="category-card" data-category="nursery">
+                    <div class="category-imgbox">
+                        <img src="assets/nursery.jpg" alt="Nursery & Bedroom">
+                    </div>
+                    <div class="category-title">Nursery & Bedroom</div>
+                    <div class="category-desc">Crib sets, anti-mosquito nets, baby pillows, foldable changing tables, and drawers for comfort. Create a safe and cozy space with our nursery must-haves, available in modern and classic styles.</div>
+                    <div class="category-price">₱1,850</div>
+                    <div class="category-actions">
+                        <button class="category-btn add-to-cart" data-title="Nursery & Bedroom" data-price="1850">Add to Cart</button>
+                        <button class="category-btn checkout" data-title="Nursery & Bedroom" data-price="1850">Checkout</button>
+                    </div>
+                    <div class="category-added" style="display:none;"></div>
+                </div>
+                <div class="category-card" data-category="gear">
+                    <div class="category-imgbox">
+                        <img src="assets/gear.jpg" alt="On-The-Go Gear">
+                    </div>
+                    <div class="category-title">On-The-Go Gear</div>
+                    <div class="category-desc">Diaper bags, travel strollers, baby carriers, and certified car seats for safe outings. Travel with ease and confidence—our gear is lightweight, durable, and safety-tested for active Filipino families.</div>
+                    <div class="category-price">₱2,450</div>
+                    <div class="category-actions">
+                        <button class="category-btn add-to-cart" data-title="On-The-Go Gear" data-price="2450">Add to Cart</button>
+                        <button class="category-btn checkout" data-title="On-The-Go Gear" data-price="2450">Checkout</button>
+                    </div>
+                    <div class="category-added" style="display:none;"></div>
+                </div>
+                <div class="category-card" data-category="bundles">
+                    <div class="category-imgbox">
+                        <img src="assets/bundles.jpg" alt="Bundles & Gift Sets">
+                    </div>
+                    <div class="category-title">Bundles & Gift Sets</div>
+                    <div class="category-desc">Baby shower gifts, birthday giveaways, and “Mommy Starter Packs” for new parents. Personalize your gift with our wrapping service and enjoy special bundles that make every celebration memorable.</div>
+                    <div class="category-price">₱1,100</div>
+                    <div class="category-actions">
+                        <button class="category-btn add-to-cart" data-title="Bundles & Gift Sets" data-price="1100">Add to Cart</button>
+                        <button class="category-btn checkout" data-title="Bundles & Gift Sets" data-price="1100">Checkout</button>
+                    </div>
+                    <div class="category-added" style="display:none;"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="cart-section" id="cart">
+            <form id="cartForm" autocomplete="off" style="width:100%;max-width:450px;">
+                <div class="cart-form-title">Your Feedback</div>
+                <label for="cartName" class="cart-form-label">Name</label>
+                <input type="text" id="cartName" name="cartName" class="cart-form-input" placeholder="Your name" required>
+
+                <label for="cartDetails" class="cart-form-label">Feedback</label>
+                <textarea id="cartDetails" name="cartDetails" class="cart-form-textarea" placeholder="How can we improve, or what would you like to share?" required></textarea>
+
+                <label for="cartContact" class="cart-form-label">Contact (Email/Phone)</label>
+                <input type="text" id="cartContact" name="cartContact" class="cart-form-input" placeholder="Your email or phone" required>
+
+                <button type="submit" class="cart-form-btn">Send Feedback</button>
+                <div class="cart-form-success" id="cartSuccess" style="display:none;"></div>
+            </form>
+        </section>
+
+        <section class="contact-section" id="contact">
+            <div class="contact-title">We're Here for You, Mom & Dad!</div>
+            <div class="contact-details">
+                <div>
+                    <div class="contact-data"><span>Store Address:</span> #78 Pineapple Street, Barangay San Isidro, 1740 City of Las Piñas, NCR, Philippines</div>
+                    <div class="contact-data"><span>Business Hours:</span> Mon–Sat: 9 AM–7 PM <br> Sunday: Closed (Family Day)</div>
+                </div>
+                <div>
+                    <div class="contact-data"><span>Phone:</span> <a href="tel:+639194567023" style="color:var(--brand-orange);text-decoration:none;">+63 919 456 7023</a></div>
+                    <div class="contact-data"><span>Email:</span> <a href="mailto:contact@danicamanuel-loft.com" style="color:var(--brand-orange);text-decoration:none;">contact@danicamanuel-loft.com</a></div>
+                    <div class="contact-data"><span>Website:</span> <a href="https://www.danicamanuel-loft.com" style="color:var(--brand-orange);text-decoration:none;">www.danicamanuel-loft.com</a></div>
+                </div>
+            </div>
+            <div class="contact-social">
+                <a href="viber://chat?number=%2B639194567023" title="Message us on Viber">📱</a>
+                <a href="https://facebook.com/danicamanuelretailloft" target="_blank" rel="noopener" title="Facebook Page">🔵</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-logo">
+            <img src="LOGO.png" alt="Danica Manuel Retail Loft Logo">
+        </div>
+        <div class="footer-links">
+            <a href="#privacy-policy">Privacy Policy</a>
+            <a href="#terms">Terms of Service</a>
+            <a href="#return-policy">Return Policy</a>
+            <a href="mailto:contact@danicamanuel-loft.com">Contact</a>
+        </div>
+        <div class="footer-info">
+            Registered Business: Danica Manuel Retail Loft<br>
+            DTI Permit #: 046128990-LP &nbsp;|&nbsp; TIN: 011-892-334-000<br>
+            Barangay Business Clearance #: BBL-SISD-0924-2025<br>
+            VAT Registered. All items sold are VAT-inclusive.<br>
+        </div>
+        <div class="footer-policies">
+            <div class="footer-policy-section" id="privacy-policy">
+                <h4>Privacy Policy</h4>
+                <p>
+                    We respect your privacy and are committed to protecting your personal information. Any details you provide will only be used for order processing and customer support. We do not share or sell your information to third parties. For questions, contact us via email at <a href="mailto:privacy@danicamanuel-loft.com" style="color:var(--brand-orange);text-decoration:underline;">privacy@danicamanuel-loft.com</a>.
+                </p>
+            </div>
+            <div class="footer-policy-section" id="terms">
+                <h4>Terms of Service</h4>
+                <p>
+                    By using our website or shopping in-store, you agree to follow all store policies and respect our staff and other customers. Product availability and prices are subject to change without notice. Payments must be made via approved methods only.
+                </p>
+            </div>
+            <div class="footer-policy-section" id="return-policy">
+                <h4>Return Policy</h4>
+                <p>
+                    Returns and exchanges are accepted within 7 days of purchase with a valid receipt and unopened packaging. Delivery fees are non-refundable. For assistance, please contact us at <a href="mailto:returns@danicamanuel-loft.com" style="color:var(--brand-orange);text-decoration:underline;">returns@danicamanuel-loft.com</a>.
+                </p>
+            </div>
+        </div>
+        <div class="footer-legal">
+            &copy; 2025 Danica Manuel Retail Loft. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        // Burger Button Functionality
+        const burgerBtn = document.getElementById('burgerBtn');
+        const navUl = document.getElementById('main-nav');
+        burgerBtn.addEventListener('click', function() {
+            burgerBtn.classList.toggle('open');
+            navUl.classList.toggle('open');
+            burgerBtn.setAttribute('aria-expanded', navUl.classList.contains('open'));
+        });
+        document.addEventListener('click', function(e) {
+            if(window.innerWidth <= 650 &&
+                !navUl.contains(e.target) &&
+                !burgerBtn.contains(e.target) &&
+                navUl.classList.contains('open')) {
+                navUl.classList.remove('open');
+                burgerBtn.classList.remove('open');
+            }
+        });
+
+        // Product Categories Data
+        const products = [
+            {
+                key: "newborn",
+                title: "Newborn & Infant Essentials",
+                price: 650,
+                img: "assets/newborn.jpg"
+            },
+            {
+                key: "toddler",
+                title: "Toddler Must-Haves",
+                price: 950,
+                img: "assets/toddler.jpg"
+            },
+            {
+                key: "nursery",
+                title: "Nursery & Bedroom",
+                price: 1850,
+                img: "assets/nursery.jpg"
+            },
+            {
+                key: "gear",
+                title: "On-The-Go Gear",
+                price: 2450,
+                img: "assets/gear.jpg"
+            },
+            {
+                key: "bundles",
+                title: "Bundles & Gift Sets",
+                price: 1100,
+                img: "assets/bundles.jpg"
+            }
+        ];
+
+        // Cart Logic
+        let cart = [];
+
+        // Cart Count and Preview Update
+        function updateCartDisplay() {
+            const cartCount = document.getElementById('cart-count');
+            cartCount.textContent = cart.reduce((a, b) => a + b.qty, 0);
+
+            // For form preview (feedback section - now shows nothing)
+            // For popup
+            updateCartPopup();
+        }
+
+        document.querySelectorAll('.add-to-cart').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const card = btn.closest('.category-card');
+                const key = card.getAttribute('data-category');
+                const title = btn.getAttribute('data-title');
+                const price = Number(btn.getAttribute('data-price'));
+                let item = cart.find(x => x.key === key);
+                if (item) {
+                    item.qty += 1;
+                } else {
+                    cart.push({ key, title, qty: 1, price: price });
+                }
+                updateCartDisplay();
+                const addedMsg = card.querySelector('.category-added');
+                addedMsg.textContent = "Added to cart!";
+                addedMsg.style.display = "block";
+                setTimeout(() => { addedMsg.style.display = "none"; }, 1200);
+            });
+        });
+
+        document.querySelectorAll('.checkout').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const card = btn.closest('.category-card');
+                const key = card.getAttribute('data-category');
+                const title = btn.getAttribute('data-title');
+                const price = Number(btn.getAttribute('data-price'));
+                let item = cart.find(x => x.key === key);
+                if (item) {
+                    item.qty += 1;
+                } else {
+                    cart.push({ key, title, qty: 1, price: price });
+                }
+                updateCartDisplay();
+                document.getElementById('cart').scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Feedback Form
+        document.getElementById('cartForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const name = document.getElementById('cartName').value.trim();
+            const contact = document.getElementById('cartContact').value.trim();
+            const details = document.getElementById('cartDetails').value.trim();
+            let message = `Name: ${name}\nContact: ${contact}\nFeedback: ${details}`;
+            // Simulate success
+            document.getElementById('cartSuccess').textContent = 'Thank you! Your feedback has been sent.';
+            document.getElementById('cartSuccess').style.display = 'block';
+            setTimeout(() => {
+                document.getElementById('cartSuccess').style.display = 'none';
+            }, 3500);
+            document.getElementById('cartForm').reset();
+        });
+
+        // --- CART POPUP LOGIC ---
+        function updateCartPopup() {
+            const cartPopupListItems = document.getElementById('cartPopupListItems');
+            const cartPopupTotal = document.getElementById('cartPopupTotal');
+            const cartPopupEmpty = document.getElementById('cartPopupEmpty');
+            cartPopupListItems.innerHTML = '';
+            if (cart.length === 0) {
+                cartPopupEmpty.style.display = 'block';
+                cartPopupTotal.textContent = '';
+            } else {
+                cartPopupEmpty.style.display = 'none';
+                let total = 0;
+                cart.forEach(item => {
+                    cartPopupListItems.innerHTML += `<li>
+                        <span>${item.title}</span>
+                        <span>₱${item.price.toLocaleString()} x${item.qty}</span>
+                    </li>`;
+                    total += item.price * item.qty;
+                });
+                cartPopupTotal.textContent = "Total: ₱" + total.toLocaleString();
+            }
+        }
+
+        // Open/Close Cart Popup
+        const openCartPopupBtn = document.getElementById('openCartPopup');
+        const cartPopupOverlay = document.getElementById('cartPopupOverlay');
+        const cartPopup = document.getElementById('cartPopup');
+        const cartPopupCloseBtn = document.getElementById('cartPopupCloseBtn');
+        const cartPopupCheckoutBtn = document.getElementById('cartPopupCheckoutBtn');
+
+        openCartPopupBtn.addEventListener('click', function(e) {
+            cartPopupOverlay.style.display = 'block';
+            cartPopup.style.display = 'flex';
+            updateCartPopup();
+        });
+        cartPopupCloseBtn.addEventListener('click', function() {
+            cartPopupOverlay.style.display = 'none';
+            cartPopup.style.display = 'none';
+        });
+        cartPopupOverlay.addEventListener('click', function() {
+            cartPopupOverlay.style.display = 'none';
+            cartPopup.style.display = 'none';
+        });
+        cartPopupCheckoutBtn.addEventListener('click', function() {
+            cartPopupOverlay.style.display = 'none';
+            cartPopup.style.display = 'none';
+            window.location.href = "order-sumarry.html";
+        });
+
+        updateCartDisplay();
+    </script>
+</body>
+</html>
