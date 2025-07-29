@@ -1,1147 +1,1089 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Danica Manuel Retail Loft | Baby & Kids Essentials</title>
-    <meta name="description" content="Your trusted store for baby and kids essentials in Las Piñas City, Metro Manila. Safe, parent-approved products and friendly service.">
-    <link rel="icon" type="image/png" href="FAVICON.png">
-    <style>
-        :root {
-            --brand-black: #191919;
-            --brand-white: #fff;
-            --brand-orange: #ff4d00;
-            --brand-gray: #f6f6f6;
-            --brand-blue: #377892;
-            --brand-lightblue: #61b7d6;
-            --brand-popup-bg: #244764;
-            --brand-popup-accent: #e3f3fb;
-            --brand-font: 'Montserrat', Arial, sans-serif;
-            --cart-shadow: 0 4px 24px rgba(255,77,0,0.10);
-        }
-        @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
-        html { font-size: 19px; }
-        * { box-sizing: border-box; }
-        body {
-            font-family: var(--brand-font);
-            background-color: var(--brand-gray);
-            margin: 0;
-            color: #1a1a1a;
-            font-size: 1.13em;
-        }
-        header {
-            background: var(--brand-white);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.04);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-        .navbar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0.5em 1em;
-            font-size: 1.08em;
-        }
-        .navbar-logo {
-            display: flex;
-            align-items: center;
-            gap: 0.75em;
-        }
-        .navbar-logo img {
-            width: 55px;
-            height: 55px;
-            object-fit: contain;
-        }
-        .navbar-title {
-            font-weight: 700;
-            font-size: 1.4em;
-            color: var(--brand-black);
-            letter-spacing: 1px;
-        }
-        nav {
-            flex: 1;
-            display: flex;
-            justify-content: flex-end;
-            position: relative;
-            font-size: 1.08em;
-        }
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 2em;
-            margin: 0;
-            padding: 0;
-            align-items: center;
-        }
-        nav ul li a {
-            color: var(--brand-black);
-            text-decoration: none;
-            font-weight: 500;
-            padding: 0.5em 0.2em;
-            font-size: 1.09em;
-            transition: color 0.2s;
-        }
-        nav ul li a:hover, nav ul li a.active {
-            color: var(--brand-orange);
-        }
-        .cart-btn {
-            position: relative;
-            background: none;
-            border: none;
-            cursor: pointer;
-            margin-left: 1em;
-            z-index: 999;
-        }
-        .cart-icon {
-            width: 31px;
-            height: 31px;
-            filter: invert(18%) sepia(97%) saturate(2529%) hue-rotate(0deg) brightness(97%) contrast(100%);
-            transition: transform 0.15s;
-        }
-        .cart-btn:hover .cart-icon {
-            transform: scale(1.12);
-        }
-        .cart-count {
-            position: absolute;
-            top: -6px;
-            right: -8px;
-            background: var(--brand-orange);
-            color: #fff;
-            font-size: 1em;
-            border-radius: 50%;
-            padding: 2px 8px;
-            min-width: 22px;
-            text-align: center;
-            font-weight: 700;
-        }
-        /* Cart Popup Styles */
-        .cart-popup-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(37,52,71,0.45);
-            z-index: 2002;
-        }
-        .cart-popup {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: fixed;
-            top: 56px;
-            right: 32px;
-            width: 350px;
-            max-width: 95vw;
-            background: var(--brand-popup-bg);
-            box-shadow: 0 8px 32px rgba(37,52,71,0.15);
-            border-radius: 17px;
-            padding: 1.6em 1.3em 1.3em 1.3em;
-            z-index: 2003;
-            animation: cartPopupFadeIn 0.23s;
-        }
-        @keyframes cartPopupFadeIn {
-            from { opacity: 0; transform: translateY(-25px);}
-            to { opacity: 1; transform: translateY(0);}
-        }
-        .cart-popup-title {
-            font-size: 1.28em;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 1em;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-        .cart-popup-list {
-            width: 100%;
-            margin-bottom: 1em;
-        }
-        .cart-popup-list ul {
-            list-style: none;
-            margin: 0; padding: 0;
-        }
-        .cart-popup-list li {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.45em;
-            font-size: 1.07em;
-            color: #fff;
-        }
-        .cart-popup-total {
-            width: 100%;
-            background: var(--brand-popup-accent);
-            border-radius: 7px;
-            padding: 0.9em 1em;
-            text-align: right;
-            font-weight: 700;
-            color: var(--brand-blue);
-            font-size: 1.15em;
-            margin-bottom: 1.2em;
-        }
-        .cart-popup-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1em;
-            width: 100%;
-            justify-content: center;
-        }
-        .cart-popup-checkout-btn {
-            background: var(--brand-lightblue);
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 0.75em 2em;
-            font-size: 1.12em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .cart-popup-checkout-btn:hover {
-            background: #fff;
-            color: var(--brand-blue);
-            border: 1px solid var(--brand-blue);
-        }
-        .cart-popup-close-btn {
-            background: none;
-            border: none;
-            color: #fff;
-            font-weight: 700;
-            font-size: 1.12em;
-            cursor: pointer;
-            margin-top: 1em;
-        }
-        .cart-popup-empty {
-            color: #c8e0ea;
-            width: 100%;
-            text-align: center;
-            margin-bottom: 1.2em;
-            font-size: 1em;
-        }
-        @media (max-width: 600px) {
-            .cart-popup {
-                right: 5vw;
-                left: 5vw;
-                width: auto;
-                min-width: 0;
-                max-width: 98vw;
-                padding: 1em 0.5em 1em 0.5em;
-            }
-        }
-        .burger-btn {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 36px;
-            height: 36px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            margin-left: 1em;
-        }
-        .burger-bar {
-            width: 26px;
-            height: 3px;
-            background: var(--brand-black);
-            margin: 4px 0;
-            border-radius: 2px;
-            transition: all 0.25s;
-        }
-        .burger-btn.open .burger-bar:nth-child(1) {
-            transform: translateY(7px) rotate(45deg);
-        }
-        .burger-btn.open .burger-bar:nth-child(2) {
-            opacity: 0;
-        }
-        .burger-btn.open .burger-bar:nth-child(3) {
-            transform: translateY(-7px) rotate(-45deg);
-        }
-        @media (max-width: 850px) {
-            nav ul {
-                gap: 1.1em;
-            }
-        }
-        @media (max-width: 650px) {
-            .navbar-logo img { width: 42px; height: 42px;}
-            .navbar-title { font-size: 1.1em; }
-            nav ul {
-                position: absolute;
-                top: 48px;
-                right: 0;
-                background: var(--brand-white);
-                flex-direction: column;
-                width: 180px;
-                box-shadow: 0 6px 24px rgba(0,0,0,0.09);
-                border-radius: 0 0 12px 12px;
-                display: none;
-                z-index: 999;
-                padding: 1em 0.5em;
-            }
-            nav ul.open {
-                display: flex;
-            }
-            .burger-btn { display: flex; }
-        }
-        .hero {
-            background: linear-gradient(90deg, #fff 65%, var(--brand-orange) 35%);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: center;
-            padding: 2.5em 1em 2em 1em;
-            font-size: 1.15em;
-        }
-        .hero-content {
-            flex: 1 1 380px;
-            max-width: 540px;
-            padding-right: 2em;
-        }
-        .hero-content h1 {
-            font-size: 2.45em;
-            margin: 0 0 0.3em 0;
-            font-weight: 700;
-            color: var(--brand-black);
-        }
-        .hero-content h2 {
-            font-size: 1.35em;
-            margin: 0 0 1em 0;
-            letter-spacing: 0.5px;
-            color: var(--brand-orange);
-            font-weight: 600;
-        }
-        .hero-content p {
-            font-size: 1.2em;
-            margin-bottom: 1.6em;
-            color: #333;
-            line-height: 1.7;
-        }
-        .hero-content .cta-btn {
-            background: var(--brand-orange);
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 0.75em 2.2em;
-            font-size: 1.12em;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .hero-content .cta-btn:hover {
-            background: #fc8128;
-        }
-        .hero-logo {
-            flex: 0 1 320px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1em 0;
-        }
-        .hero-logo img {
-            width: 220px;
-            max-width: 98vw;
-            height: auto;
-        }
-        @media (max-width: 950px) {
-            .hero {
-                flex-direction: column;
-                padding: 2em 1em 1.5em 1em;
-            }
-            .hero-content, .hero-logo {
-                max-width: 100%;
-                padding: 0.5em 0;
-            }
-            .hero-content {
-                padding-right: 0;
-            }
-        }
-        @media (max-width: 650px) {
-            .hero-logo img { width: 90vw; max-width: 150px; }
-        }
-        .features {
-            background: var(--brand-gray);
-            padding: 2.2em 0 1.7em 0;
-        }
-        .features-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2.5em;
-            max-width: 1150px;
-            margin: 0 auto;
-            justify-content: center;
-        }
-        .feature-item {
-            background: #fff;
-            border-radius: 11px;
-            box-shadow: 0 1px 6px rgba(0,0,0,0.07);
-            padding: 1.3em 1.35em;
-            flex: 1 1 220px;
-            max-width: 260px;
-            text-align: center;
-            margin: 0.5em 0;
-            font-size: 1.09em;
-        }
-        .feature-title {
-            font-weight: 700;
-            color: var(--brand-orange);
-            margin-bottom: 0.2em;
-            font-size: 1.13em;
-        }
-        .feature-desc {
-            font-size: 1.09em;
-            color: #333;
-        }
-        @media (max-width: 900px) {
-            .features-list {
-                flex-direction: column;
-                gap: 1em;
-                align-items: center;
-            }
-        }
-        .categories {
-            background: var(--brand-white);
-            padding: 2.2em 1em 1.5em 1em;
-        }
-        .categories-title {
-            text-align: center;
-            font-size: 1.75em;
-            font-weight: 700;
-            color: var(--brand-black);
-            margin-bottom: 1.2em;
-        }
-        .categories-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-            gap: 2em;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        .category-card {
-            background: var(--brand-gray);
-            border-radius: 18px;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.12);
-            padding: 2em 1.3em 1.8em 1.3em;
-            min-height: 480px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            transition: box-shadow 0.2s, transform 0.2s;
-            font-size: 1.08em;
-        }
-        .category-card:hover {
-            box-shadow: 0 12px 36px rgba(255,77,0,0.13);
-            transform: translateY(-5px) scale(1.03);
-        }
-        .category-imgbox {
-            width: 115px;
-            height: 115px;
-            background: #fff;
-            border-radius: 50%;
-            box-shadow: 0 3px 12px rgba(255,77,0,0.07);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1em;
-            overflow: hidden;
-        }
-        .category-imgbox img {
-            width: 95px;
-            height: 95px;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-        .category-title {
-            font-weight: 700;
-            color: var(--brand-orange);
-            margin-bottom: 0.35em;
-            font-size: 1.22em;
-            text-align: center;
-        }
-        .category-desc {
-            font-size: 1.09em;
-            color: #222;
-            text-align: center;
-            margin-bottom: 1em;
-            line-height: 1.7;
-        }
-        .category-price {
-            font-weight: 700;
-            color: var(--brand-black);
-            font-size: 1.12em;
-            text-align: center;
-            margin-bottom: 1.3em;
-            background: #ffe5d3;
-            border-radius: 6px;
-            padding: 0.38em 1em;
-            display: inline-block;
-        }
-        .category-actions {
-            display: flex;
-            gap: 0.7em;
-            margin-top: auto;
-            align-items: center;
-            justify-content: center;
-        }
-        .category-btn {
-            background: var(--brand-orange);
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 0.67em 1.3em;
-            font-size: 1.07em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .category-btn:active, .category-btn:focus {
-            background: #fc8128;
-        }
-        .category-btn.checkout {
-            background: #191919;
-            color: #fff;
-        }
-        .category-btn.checkout:active, .category-btn.checkout:focus {
-            background: #333;
-        }
-        .category-added {
-            color: #54b054;
-            font-size: 1em;
-            margin-top: 0.7em;
-            font-weight: 600;
-        }
-        @media (max-width: 1050px) {
-            .categories-list {
-                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-                gap: 1.2em;
-            }
-            .category-card {
-                min-height: 410px;
-            }
-        }
-        @media (max-width: 700px) {
-            .categories-list {
-                grid-template-columns: 1fr;
-            }
-            .category-card {
-                min-height: 0;
-            }
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Danica Manuel Retail Loft – Baby & Kids Essentials</title>
+  <link rel="icon" type="image/png" href="image/FAVICON.png" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+  <!-- Remixicon for icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #111111;
+      --secondary: #ff3c00;
+      --accent: #ffb366;
+      --bg: #f7f8fb;
+      --text: #222a36;
+      --muted: #6c7a91;
+      --white: #fff;
+      --radius: 1.1rem;
+      --shadow: 0 8px 32px 0 rgba(55, 55, 55, 0.07);
+      --transition: .22s cubic-bezier(.4,0,.2,1);
+      --border: 1px solid #e8e9ef;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; transition: color var(--transition);}
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; border-radius: .5rem; }
+    button, input { font-family: inherit; outline: none; border: none; background: none; }
 
-        /* New Style for Feedback Section (Form Based) */
-        .cart-section {
-            background: var(--brand-blue);
-            border-radius: 20px;
-            box-shadow: 0 6px 32px rgba(0,0,0,0.12);
-            margin: 2.5em auto 2.5em auto;
-            width: 97vw;
-            max-width: 460px;
-            padding: 2.2em 2em 2em 2em;
-            border: none;
-            font-size: 1.08em;
-            position: static;
-            left: unset;
-            bottom: unset;
-            transform: unset;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .cart-form-title {
-            font-size: 1.4em;
-            font-weight: 700;
-            color: #fff;
-            margin-bottom: 1.15em;
-            text-align: center;
-            letter-spacing: 1px;
-        }
-        .cart-form-label {
-            color: #c8e0ea;
-            font-weight: 600;
-            font-size: 1.09em;
-            margin-bottom: 0.3em;
-            margin-top: 1.1em;
-            display: block;
-        }
-        .cart-form-input, .cart-form-textarea {
-            width: 100%;
-            padding: 0.8em 1em;
-            border-radius: 7px;
-            border: none;
-            font-size: 1.08em;
-            margin-bottom: 1em;
-            background: #fff;
-            color: #191919;
-            font-family: var(--brand-font);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-        .cart-form-textarea {
-            height: 90px;
-            resize: vertical;
-        }
-        .cart-form-btn {
-            background: var(--brand-lightblue);
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 0.75em 2em;
-            font-size: 1.15em;
-            font-weight: 700;
-            cursor: pointer;
-            margin-top: 1em;
-            transition: background 0.2s;
-        }
-        .cart-form-btn:hover {
-            background: #4ea0bd;
-        }
-        .cart-form-success {
-            color: #bff7c2;
-            background: #2d5d70;
-            border-radius: 6px;
-            font-size: 1.09em;
-            padding: 0.5em 1em;
-            margin-top: 0.7em;
-            text-align: center;
-            font-weight: 600;
-        }
-        @media (max-width: 700px) {
-            .cart-section {
-                width: 98vw;
-                max-width: 98vw;
-                padding: 1.3em 0.7em 1.3em 0.7em;
-            }
-        }
-        .contact-section {
-            background: var(--brand-gray);
-            padding: 2.2em 1em 1.5em 1em;
-            border-top: 1px solid #eee;
-            font-size: 1.09em;
-        }
-        .contact-title {
-            font-size: 1.22em;
-            font-weight: 700;
-            color: var(--brand-black);
-            margin-bottom: 0.7em;
-            text-align: center;
-        }
-        .contact-details {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2em;
-            justify-content: center;
-            margin-bottom: 1em;
-        }
-        .contact-details > div {
-            flex: 1 1 220px;
-            max-width: 320px;
-        }
-        .contact-data {
-            margin-bottom: 0.8em;
-            color: #222;
-            font-size: 1.09em;
-        }
-        .contact-data span {
-            font-weight: 600;
-            color: var(--brand-orange);
-        }
-        .contact-social {
-            display: flex;
-            gap: 1em;
-            justify-content: center;
-            margin-top: 0.5em;
-        }
-        .contact-social a {
-            color: var(--brand-orange);
-            font-size: 2em;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-        .contact-social a:hover {
-            color: #fc8128;
-        }
-        .footer {
-            background: var(--brand-black);
-            color: var(--brand-white);
-            padding: 2em 1em 1em 1em;
-            text-align: center;
-            font-size: 1.07em;
-        }
-        .footer-logo {
-            margin-bottom: 1.1em;
-        }
-        .footer-logo img {
-            width: 65px;
-            height: 65px;
-        }
-        .footer-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5em;
-            justify-content: center;
-            margin-bottom: 1.1em;
-        }
-        .footer-links a {
-            color: var(--brand-orange);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.09em;
-            transition: color 0.2s;
-        }
-        .footer-links a:hover {
-            color: #fff;
-        }
-        .footer-info {
-            font-size: 1.05em;
-            margin-bottom: 1em;
-        }
-        .footer-legal {
-            font-size: 0.99em;
-            color: #bdbdbd;
-        }
-        .footer-policies {
-            margin: 1.3em 0 0.7em 0;
-            font-size: 1.06em;
-            text-align: left;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .footer-policy-section {
-            margin-bottom: 1.1em;
-        }
-        .footer-policy-section h4 {
-            color: var(--brand-orange);
-            font-size: 1.07em;
-            margin-bottom: 0.35em;
-            font-weight: 700;
-        }
-        .footer-policy-section p {
-            margin: 0 0 0.3em 0;
-            color: #eaeaea;
-            line-height: 1.65;
-        }
-        @media (max-width: 700px) {
-            .footer-policies {
-                font-size: 1em;
-                padding: 0 0.5em;
-            }
-            .footer-links {
-                gap: 0.8em;
-            }
-        }
-    </style>
+    .loft-logo {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .loft-logo-img {
+      width: 52px; height: 52px;
+      background: none;
+      border-radius: .4rem;
+      object-fit: contain;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+      margin-right: .5rem;
+    }
+    .loft-logo-text {
+      font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1.45rem;
+      color: var(--primary);
+      letter-spacing: 2px;
+      margin-top: 2px;
+    }
+    .header {
+      width: 100%;
+      background: var(--white);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      transition: box-shadow var(--transition);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+    }
+    .nav-list {
+      display: flex;
+      align-items: center;
+      gap: 2.3rem;
+      transition: right var(--transition);
+    }
+    .nav-link {
+      position: relative;
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 1rem;
+      padding: 0.2rem 0;
+      transition: color var(--transition);
+    }
+    .nav-link.active, .nav-link:hover { color: var(--secondary); }
+    .nav-link.active::after {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--secondary);
+      border-radius: 2px;
+      margin: 0.16rem auto 0;
+      transition: width var(--transition);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+    .nav-action-btn {
+      font-size: 1.4rem;
+      color: var(--secondary);
+      background: var(--white);
+      border-radius: 50%;
+      padding: 0.5rem;
+      transition: background var(--transition), color var(--transition);
+      cursor: pointer;
+      border: var(--border);
+    }
+    .nav-action-btn:hover {
+      background: var(--secondary);
+      color: var(--white);
+    }
+    .nav-toggle {
+      display: none;
+      font-size: 2rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--secondary);
+      margin-left: 1rem;
+    }
+    .nav-close {
+      display: none;
+      font-size: 2.3rem;
+      background: none;
+      border: none;
+      position: absolute;
+      top: 1.1rem;
+      right: 1.6rem;
+      color: var(--secondary);
+      cursor: pointer;
+      z-index: 121;
+      transition: color var(--transition);
+    }
+    @media (max-width: 700px) {
+      .nav-list {
+        position: fixed;
+        top: 0;
+        right: -100vw;
+        width: 80vw;
+        height: 100vh;
+        background: var(--white);
+        flex-direction: column;
+        gap: 2.1rem;
+        padding-top: 5rem;
+        z-index: 120;
+        box-shadow: -2px 0 18px 0 rgba(55,55,55,0.07);
+      }
+      .nav-list.open {
+        right: 0;
+      }
+      .nav-toggle { display: block; }
+      .nav-close { display: block; }
+    }
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 350px;
+      max-width: 96vw;
+      height: 100%;
+      background: var(--white);
+      box-shadow: -2px 0 16px 0 rgba(30,30,30,0.09);
+      z-index: 101;
+      padding: 2rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      transition: right var(--transition);
+    }
+    .cart-sidebar.open { right: 0; }
+    .cart-sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+    .cart-sidebar-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--secondary);
+    }
+    .cart-sidebar-close {
+      font-size: 1.8rem;
+      color: var(--secondary);
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color var(--transition);
+    }
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+      border-bottom: 1px solid #f0f1f5;
+      padding-bottom: 1rem;
+    }
+    .cart-item-img {
+      width: 58px; height: 58px;
+      object-fit: contain;
+      border-radius: .5rem;
+      background: #f7f8fb;
+    }
+    .cart-item-details { flex: 1; }
+    .cart-item-title { font-size: 1rem; font-weight: 600; margin-bottom: .12rem; }
+    .cart-item-price { color: var(--secondary); font-weight: 500; margin-bottom: .12rem; font-size: 0.93rem; }
+    .cart-item-qty {
+      display: flex;
+      align-items: center;
+      gap: .3rem;
+      margin-top: .17rem;
+    }
+    .cart-item-qty-btn {
+      font-size: 1.15rem;
+      background: var(--bg);
+      border-radius: .3rem;
+      padding: 2px 8px;
+      cursor: pointer;
+      color: var(--secondary);
+      border: 1px solid #dbe4f9;
+      transition: background var(--transition), color var(--transition);
+    }
+    .cart-item-qty-btn:hover {
+      background: var(--secondary);
+      color: var(--white);
+    }
+    .cart-item-remove {
+      color: #e14d4d;
+      font-size: 1.1rem;
+      margin-left: .45rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color var(--transition);
+    }
+    .cart-sidebar-footer {
+      margin-top: 1.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-weight: 600;
+      font-size: 1.01rem;
+    }
+    .cart-sidebar-footer .checkout-btn {
+      padding: 0.62rem 1.3rem;
+      background: var(--secondary);
+      color: var(--white);
+      border-radius: .5rem;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .cart-sidebar-footer .checkout-btn:hover {
+      background: var(--primary);
+    }
+    .cart-overlay {
+      position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(30,40,60,0.14);
+      z-index: 100;
+      display: none;
+    }
+    .cart-overlay.active { display: block; }
+    main {
+      max-width: 1150px;
+      margin: 0 auto;
+      padding: 2.5rem 1.1rem 3rem;
+    }
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 3rem;
+      background: linear-gradient(90deg, #fff9f3 0%, #f8f5ff 100%);
+      border-radius: var(--radius);
+      padding: 2.2rem 2.5rem;
+      margin-bottom: 2.3rem;
+      box-shadow: var(--shadow);
+      flex-wrap: wrap;
+    }
+    .hero-content {
+      flex: 1;
+      min-width: 260px;
+    }
+    .hero-title {
+      font-size: 2.35rem;
+      font-weight: 800;
+      color: var(--primary);
+      line-height: 1.11;
+      font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+      letter-spacing: 2px;
+      margin-bottom: 1.1rem;
+    }
+    .hero-title span {
+      color: var(--secondary);
+      font-family: inherit;
+    }
+    .hero-desc {
+      color: var(--muted);
+      font-size: 1.09rem;
+      margin-bottom: 1.3rem;
+      max-width: 440px;
+    }
+    .hero-btns { display: flex; gap: 1rem;}
+    .btn-primary, .btn-secondary {
+      padding: 0.85rem 2rem;
+      font-size: 1rem;
+      border-radius: .7rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition), box-shadow var(--transition);
+      box-shadow: 0 2px 8px 0 rgba(55,55,55,0.06);
+      outline: none;
+      border: none;
+      font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+    }
+    .btn-primary {
+      background: var(--secondary);
+      color: var(--white);
+    }
+    .btn-primary:hover { background: var(--primary);}
+    .btn-secondary {
+      background: var(--white);
+      color: var(--secondary);
+      border: 2px solid var(--secondary);
+    }
+    .btn-secondary:hover {
+      background: var(--secondary);
+      color: var(--white);
+    }
+    .hero-img-container {
+      min-width: 200px;
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .hero-img {
+      width: 280px;
+      max-width: 100%;
+      background: none;
+      object-fit: contain;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    .section-title {
+      font-size: 2rem;
+      color: var(--secondary);
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 2rem;
+      margin-top: 1rem;
+      font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+      letter-spacing: 1px;
+    }
+    .section-title.about-title {
+      margin-top: 2.5rem;
+      color: var(--primary);
+      font-size: 1.75rem;
+    }
+    .section-title.contact-title {
+      margin-top: 2.5rem;
+      color: var(--primary);
+      font-size: 1.75rem;
+    }
+    .about-section, .contact-section {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2rem 1.5rem;
+      max-width: 900px;
+      margin: 0 auto 2rem auto;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+    .about-section strong {
+      color: var(--secondary);
+      font-weight: 700;
+    }
+    .contact-section .contact-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      justify-content: space-between;
+      margin-bottom: 1.6rem;
+    }
+    .contact-section .contact-info {
+      flex: 1 1 300px;
+    }
+    .contact-section .contact-title {
+      font-weight: 600;
+      margin-bottom: .8rem;
+      color: var(--secondary);
+      font-size: 1.15rem;
+    }
+    .contact-section .contact-label {
+      font-weight: 500;
+      color: var(--muted);
+      font-size: .97rem;
+      margin-bottom: .2rem;
+      display: block;
+    }
+    .contact-section .contact-link {
+      color: var(--secondary);
+      font-weight: 600;
+      font-size: 1.03rem;
+      display: block;
+    }
+    .contact-section .contact-form {
+      flex: 1 1 300px;
+      max-width: 400px;
+      background: #f7f8fb;
+      border-radius: .7rem;
+      padding: 1rem 1.2rem;
+      box-shadow: 0 2px 8px 0 rgba(55,55,55,0.06);
+    }
+    .contact-section .contact-form label {
+      display: block;
+      margin-bottom: .3rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .contact-section .contact-form input,
+    .contact-section .contact-form textarea {
+      width: 100%;
+      padding: .6rem .9rem;
+      margin-bottom: .8rem;
+      border-radius: .5rem;
+      border: 1px solid #e6ecf6;
+      background: #fff;
+      font-size: 1rem;
+      color: var(--text);
+    }
+    .contact-section .contact-form textarea {
+      resize: vertical;
+      min-height: 70px;
+      max-height: 200px;
+    }
+    .contact-section .contact-form button {
+      background: var(--secondary);
+      color: var(--white);
+      border-radius: .5rem;
+      padding: .75rem 2rem;
+      font-weight: 600;
+      font-size: 1rem;
+      border: none;
+      transition: background var(--transition);
+      cursor: pointer;
+    }
+    .contact-section .contact-form button:hover {
+      background: var(--primary);
+    }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.7rem;
+      margin-bottom: 2.7rem;
+    }
+    .product-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.4rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform .14s cubic-bezier(.4,0,.2,1), box-shadow var(--transition);
+      position: relative;
+    }
+    .product-card:hover {
+      transform: translateY(-5px) scale(1.025);
+      box-shadow: 0 11px 28px 0 rgba(55,55,55,.12);
+    }
+    .product-img {
+      width: 110px; height: 110px;
+      object-fit: contain;
+      margin-bottom: 1rem;
+      background: #f7f8fb;
+      border-radius: .5rem;
+    }
+    .product-name { font-weight: 700; font-size: 1.09rem; text-align: center; margin-bottom: .38rem;}
+    .product-desc { font-size: 0.95rem; color: var(--muted); margin-bottom: 0.7rem; text-align: center;}
+    .product-qty {color: #e75a1c; font-size: .95rem; margin-bottom: .2rem; font-weight: 500;}
+    .product-price { font-weight: 600; font-size: 1.09rem; color: var(--secondary); margin-bottom: .9rem; }
+    .product-add {
+      background: var(--secondary);
+      color: var(--white);
+      border-radius: .4rem;
+      padding: 0.6rem 1.3rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      border: none;
+      transition: background var(--transition);
+      display: flex;
+      align-items: center;
+      gap: .4rem;
+      font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+    }
+    .product-add:hover { background: var(--primary);}
+    .product-badge {
+      position: absolute;
+      top: 1.15rem; right: 1.1rem;
+      background: var(--accent);
+      color: var(--white);
+      font-weight: 600;
+      font-size: .89rem;
+      padding: 0.19rem 0.7rem;
+      border-radius: .5rem;
+      letter-spacing: .5px;
+      box-shadow: 0 2px 8px 0 rgba(255,179,102,0.08);
+      font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+    }
+    .info-sections {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      justify-content: center;
+    }
+    .info-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem 1.1rem;
+      min-width: 220px;
+      flex: 1 1 220px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      max-width: 350px;
+    }
+    .info-icon { font-size: 2.1rem; color: var(--secondary); margin-bottom: 0.7rem;}
+    .info-title { font-size: 1.08rem; font-weight: 700; margin-bottom: .4rem;}
+    .info-desc { color: var(--muted); font-size: 0.95rem;}
+    .footer {
+      background: var(--primary);
+      color: var(--white);
+      padding: 2.6rem 0 1.2rem;
+      margin-top: 2.7rem;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.2rem;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 0 2rem;
+    }
+    .footer-brand { flex: 1 1 240px; margin-bottom: 1.6rem;}
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      margin-bottom: 0.6rem;
+      font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+      font-size: 1.18rem;
+      font-weight: 700;
+    }
+    .footer-logo img {
+      width: 32px; height: 32px; background: none; border-radius: .2rem;
+      filter: none;
+    }
+    .footer-desc { color: #e9efff; font-size: .99rem; margin-bottom: .7rem;}
+    .footer-socials { display: flex; gap: 1.1rem; margin-top: .6rem;}
+    .footer-social-link {
+      color: var(--secondary);
+      background: var(--white);
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.17rem;
+      width: 2rem; height: 2rem;
+      transition: background var(--transition), color var(--transition);
+      border: 1px solid #e9efff;
+    }
+    .footer-social-link:hover { background: var(--accent); color: var(--white);}
+    .footer-links-group { flex: 1 1 150px; margin-bottom: 1.8rem;}
+    .footer-links-title { font-size: 1.06rem; font-weight: 700; margin-bottom: .38rem; letter-spacing: .5px;}
+    .footer-links { display: flex; flex-direction: column; gap: .33rem;}
+    .footer-link { color: #e9efff; font-size: .97rem; transition: color var(--transition); opacity: .94;}
+    .footer-link:hover { color: var(--accent);}
+    .footer-bottom {
+      text-align: center;
+      font-size: .96rem;
+      color: #e9efff;
+      margin-top: 1.5rem;
+      opacity: .85;
+    }
+    .footer-bottom a { color: #fff; font-weight: 600; text-decoration: underline; transition: color var(--transition);}
+    .footer-bottom a:hover { color: var(--accent);}
+    @media (max-width: 1100px) {
+      .hero { flex-direction: column; text-align: center;}
+      .hero-content, .hero-img-container { justify-content: center;}
+      .hero-img { margin: 1.2rem auto 0 auto;}
+    }
+    @media (max-width: 900px) {
+      .nav-list { gap: 1.1rem;}
+      .footer-container { flex-direction: column; gap: 2.2rem; align-items: flex-start;}
+    }
+    @media (max-width: 776px) {
+      .nav { padding: 1rem 1rem;}
+      .main { padding: 1.2rem .5rem 2rem;}
+      .products-grid, .info-sections { gap: 1rem;}
+      .footer-container { padding: 0 1rem;}
+    }
+    @media (max-width: 700px) {
+      .nav-list {
+        position: fixed;
+        top: 0;
+        right: -100vw;
+        width: 80vw;
+        height: 100vh;
+        background: var(--white);
+        flex-direction: column;
+        gap: 2rem;
+        padding-top: 5rem;
+        z-index: 120;
+        box-shadow: -2px 0 18px 0 rgba(55,55,55,0.07);
+      }
+      .nav-list.open { right: 0;}
+      .nav-toggle { display: block;}
+      .nav-close {
+        display: block;
+        position: absolute;
+        top: 1.1rem;
+        right: 1.6rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .hero { padding: 1.1rem .6rem;}
+      .footer { padding: 2rem 0 1.1rem;}
+      .about-section, .contact-section { padding: 1.3rem .8rem; }
+    }
+    @media (max-width: 430px) {
+      .cart-sidebar { width: 98vw; padding: 1rem .5rem;}
+      .footer-logo img { width: 25px; height: 25px;}
+    }
+  </style>
 </head>
 <body>
+  <header class="header" id="header">
+    <nav class="nav">
+      <a href="index.html" class="loft-logo">
+        <img src="image/LOGO.png" alt="Danica Manuel Retail Loft Logo" class="loft-logo-img" />
+        <span class="loft-logo-text">DANICA MANUEL <br><span style="font-size:1.04em;font-weight:900;letter-spacing:0px;">RETAIL LOFT</span></span>
+      </a>
+      <ul class="nav-list" id="nav-list">
+        <li><a href="#home" class="nav-link active" id="nav-home">Home</a></li>
+        <li><a href="#shop" class="nav-link" id="nav-shop">Shop</a></li>
+        <li><a href="#about-section" class="nav-link" id="nav-about">About</a></li>
+        <li><a href="#contact-section" class="nav-link" id="nav-contact">Contact</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button class="nav-action-btn" id="cart-btn" aria-label="Open cart"><i class="ri-shopping-bag-3-line"></i></button>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Open menu"><i class="ri-menu-3-line"></i></button>
+      </div>
+      <button class="nav-close" id="nav-close" aria-label="Close menu"><i class="ri-close-line"></i></button>
+    </nav>
+  </header>
 
-    <header>
-        <div class="navbar">
-            <div class="navbar-logo">
-                <img src="LOGO.png" alt="Danica Manuel Retail Loft Logo" width="55" height="55">
-                <span class="navbar-title">Danica Manuel Retail Loft</span>
-            </div>
-            <nav>
-                <ul id="main-nav">
-                    <li><a href="#home" class="active">Home</a></li>
-                    <li><a href="#about">About Us</a></li>
-                    <li><a href="#products">Products</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                    <li><a href="#cart">Cart</a></li>
-                </ul>
-                <button class="burger-btn" id="burgerBtn" aria-label="Menu" aria-expanded="false">
-                    <span class="burger-bar"></span>
-                    <span class="burger-bar"></span>
-                    <span class="burger-bar"></span>
-                </button>
-            </nav>
-            <button class="cart-btn" id="openCartPopup" aria-label="View Cart">
-                <!-- New cart SVG with better accessibility and style -->
-                <svg class="cart-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-                    <circle cx="16" cy="16" r="16" fill="#ff4d00"/>
-                    <path d="M10.5 10.5h11l-1.2 8.7c-.1.8-.8 1.3-1.6 1.3h-5.4c-.8 0-1.5-.5-1.6-1.3l-1.2-8.7z" fill="#fff"/>
-                    <circle cx="13" cy="23" r="1.3" fill="#fff"/>
-                    <circle cx="19" cy="23" r="1.3" fill="#fff"/>
-                </svg>
-                <span class="cart-count" id="cart-count">0</span>
-            </button>
-        </div>
-    </header>
-
-    <!-- CART POPUP -->
-    <div class="cart-popup-overlay" id="cartPopupOverlay"></div>
-    <div class="cart-popup" id="cartPopup" style="display:none;">
-        <div class="cart-popup-title">Your Cart</div>
-        <div class="cart-popup-list" id="cartPopupList">
-            <ul id="cartPopupListItems"></ul>
-        </div>
-        <div class="cart-popup-total" id="cartPopupTotal"></div>
-        <div class="cart-popup-empty" id="cartPopupEmpty" style="display:none;">Your cart is empty.</div>
-        <div class="cart-popup-actions">
-            <button class="cart-popup-checkout-btn" id="cartPopupCheckoutBtn">Checkout</button>
-            <button class="cart-popup-close-btn" id="cartPopupCloseBtn">Close</button>
-        </div>
+  <!-- Cart Sidebar & Overlay -->
+  <div class="cart-overlay" id="cart-overlay"></div>
+  <aside class="cart-sidebar" id="cart-sidebar" aria-label="Shopping cart">
+    <div class="cart-sidebar-header">
+      <div class="cart-sidebar-title">My Cart</div>
+      <button class="cart-sidebar-close" id="cart-close" aria-label="Close cart"><i class="ri-close-line"></i></button>
     </div>
-    <!-- END CART POPUP -->
+    <div class="cart-items" id="cart-items">
+      <!-- Cart items will be dynamically added here -->
+    </div>
+    <div class="cart-sidebar-footer">
+      <span><span id="cart-items-count">0</span> items | <span id="cart-total">₱0.00</span></span>
+      <button class="checkout-btn" id="checkout-btn">Checkout</button>
+    </div>
+  </aside>
 
-    <main>
-        <section class="hero" id="home">
-            <div class="hero-content">
-                <h1>Your Partner in Parenthood</h1>
-                <h2>Essentials for Baby, Toddler, & Growing Kids</h2>
-                <p>
-                    At Danica Manuel Retail Loft, we know how important every stage of your child’s growth is. From the very first days of newborn care to the energetic years of toddlerhood and beyond, our store is built to support Filipino families with only the best essentials. <br><br>
-                    Our collection features certified safe, trusted brands and locally sourced baby goods. Whether you’re shopping for everyday supplies, special gifts, or nursery upgrades, we offer affordable bundles and sulit finds that fit every budget. <br><br>
-                    Visit our clean, stroller-friendly store in Las Piñas or shop online 24/7. Our parent-friendly staff is always ready to help with advice and demos. Create a baby registry, find birthday giveaways, or just enjoy peace of mind knowing you’re getting authentic products at tamang presyo.<br><br>
-                    Join our community of happy parents—because at Danica Manuel Retail Loft, we treat every customer like family.
-                </p>
-                <a class="cta-btn" href="#products">Shop Now</a>
-            </div>
-            <div class="hero-logo">
-                <img src="LOGO.png" alt="Danica Manuel Retail Loft Logo">
-            </div>
-        </section>
+  <main>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="hero-content">
+        <h1 class="hero-title">Welcome to <span>DANICA MANUEL RETAIL LOFT</span></h1>
+        <div class="hero-desc">
+          At Danica Manuel Retail Loft, we make parenting a little easier.<br>
+          Located in Las Piñas City, we provide quality baby and kids essentials—from newborn care to toddler needs. Trust, quality, and genuine care for Filipino families.
+        </div>
+        <div class="hero-btns">
+          <a href="#shop" class="btn-primary" id="shop-now-btn">Shop Now</a>
+          <a href="#newsletter" class="btn-secondary">Get Updates</a>
+        </div>
+      </div>
+      <div class="hero-img-container">
+        <img src="image/LOGO.png" alt="Danica Manuel Retail Loft Logo" class="hero-img" />
+      </div>
+    </section>
 
-        <section class="features" id="about">
-            <div class="features-list">
-                <div class="feature-item">
-                    <div class="feature-title">Trusted Brands</div>
-                    <div class="feature-desc">Shop only certified and parent-approved products for peace of mind. All items are sourced from trusted local and international brands with safety certifications.</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-title">Affordable Bundles</div>
-                    <div class="feature-desc">Sulit finds and exclusive bundles for every stage of childhood. Find value packs for diapers, toys, and more to maximize your budget.</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-title">Parent-Friendly Staff</div>
-                    <div class="feature-desc">Expert advice and help from staff who understand your needs. Ask us about product demos, best picks, and local parenting tips.</div>
-                </div>
-                <div class="feature-item">
-                    <div class="feature-title">Clean & Stroller-Friendly</div>
-                    <div class="feature-desc">Shop in comfort—our store is safe, clean, and easy to navigate. Strollers welcome, and our aisles are designed for families.</div>
-                </div>
-            </div>
-        </section>
+    <!-- Info Sections -->
+    <section class="info-sections">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-shield-check-line"></i></div>
+        <div class="info-title">Quality & Safety</div>
+        <div class="info-desc">Every product is handpicked to meet strict safety standards—your child's well-being first.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-customer-service-2-line"></i></div>
+        <div class="info-title">Customer Care</div>
+        <div class="info-desc">We offer support and guidance for every parent. Your questions matter to us.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-truck-line"></i></div>
+        <div class="info-title">Metro Manila Delivery</div>
+        <div class="info-desc">Fast and reliable delivery within Metro Manila and select provinces.</div>
+      </div>
+    </section>
 
-        <section class="categories" id="products">
-            <div class="categories-title">Product Categories</div>
-            <div class="categories-list">
-                <div class="category-card" data-category="newborn">
-                    <div class="category-imgbox">
-                        <img src="assets/newborn.jpg" alt="Newborn & Infant Essentials">
-                    </div>
-                    <div class="category-title">Newborn & Infant Essentials</div>
-                    <div class="category-desc">Diapers (NB to XL), organic wipes, hypoallergenic baby lotion & wash, nursing pillows, feeding bottles, pacifiers, and more. All newborn items are gentle, dermatologically tested, and safe for sensitive skin.</div>
-                    <div class="category-price">₱650</div>
-                    <div class="category-actions">
-                        <button class="category-btn add-to-cart" data-title="Newborn & Infant Essentials" data-price="650">Add to Cart</button>
-                        <button class="category-btn checkout" data-title="Newborn & Infant Essentials" data-price="650">Checkout</button>
-                    </div>
-                    <div class="category-added" style="display:none;"></div>
-                </div>
-                <div class="category-card" data-category="toddler">
-                    <div class="category-imgbox">
-                        <img src="assets/toddler.jpg" alt="Toddler Must-Haves">
-                    </div>
-                    <div class="category-title">Toddler Must-Haves</div>
-                    <div class="category-desc">Educational toys, play mats, spill-proof sippy cups, training pants, toddler utensils, and night diapers. Foster learning and self-feeding with our curated toddler picks for every milestone.</div>
-                    <div class="category-price">₱950</div>
-                    <div class="category-actions">
-                        <button class="category-btn add-to-cart" data-title="Toddler Must-Haves" data-price="950">Add to Cart</button>
-                        <button class="category-btn checkout" data-title="Toddler Must-Haves" data-price="950">Checkout</button>
-                    </div>
-                    <div class="category-added" style="display:none;"></div>
-                </div>
-                <div class="category-card" data-category="nursery">
-                    <div class="category-imgbox">
-                        <img src="assets/nursery.jpg" alt="Nursery & Bedroom">
-                    </div>
-                    <div class="category-title">Nursery & Bedroom</div>
-                    <div class="category-desc">Crib sets, anti-mosquito nets, baby pillows, foldable changing tables, and drawers for comfort. Create a safe and cozy space with our nursery must-haves, available in modern and classic styles.</div>
-                    <div class="category-price">₱1,850</div>
-                    <div class="category-actions">
-                        <button class="category-btn add-to-cart" data-title="Nursery & Bedroom" data-price="1850">Add to Cart</button>
-                        <button class="category-btn checkout" data-title="Nursery & Bedroom" data-price="1850">Checkout</button>
-                    </div>
-                    <div class="category-added" style="display:none;"></div>
-                </div>
-                <div class="category-card" data-category="gear">
-                    <div class="category-imgbox">
-                        <img src="assets/gear.jpg" alt="On-The-Go Gear">
-                    </div>
-                    <div class="category-title">On-The-Go Gear</div>
-                    <div class="category-desc">Diaper bags, travel strollers, baby carriers, and certified car seats for safe outings. Travel with ease and confidence—our gear is lightweight, durable, and safety-tested for active Filipino families.</div>
-                    <div class="category-price">₱2,450</div>
-                    <div class="category-actions">
-                        <button class="category-btn add-to-cart" data-title="On-The-Go Gear" data-price="2450">Add to Cart</button>
-                        <button class="category-btn checkout" data-title="On-The-Go Gear" data-price="2450">Checkout</button>
-                    </div>
-                    <div class="category-added" style="display:none;"></div>
-                </div>
-                <div class="category-card" data-category="bundles">
-                    <div class="category-imgbox">
-                        <img src="assets/bundles.jpg" alt="Bundles & Gift Sets">
-                    </div>
-                    <div class="category-title">Bundles & Gift Sets</div>
-                    <div class="category-desc">Baby shower gifts, birthday giveaways, and “Mommy Starter Packs” for new parents. Personalize your gift with our wrapping service and enjoy special bundles that make every celebration memorable.</div>
-                    <div class="category-price">₱1,100</div>
-                    <div class="category-actions">
-                        <button class="category-btn add-to-cart" data-title="Bundles & Gift Sets" data-price="1100">Add to Cart</button>
-                        <button class="category-btn checkout" data-title="Bundles & Gift Sets" data-price="1100">Checkout</button>
-                    </div>
-                    <div class="category-added" style="display:none;"></div>
-                </div>
-            </div>
-        </section>
+    <!-- New Arrivals / Shop -->
+    <section id="shop">
+      <h2 class="section-title">Baby & Kids Essentials</h2>
+      <div class="products-grid" id="products-grid">
+        <div class="product-card" data-id="1" data-name="Feeding Bottle (BPA-free)" data-price="199.00" data-img="image/placeholder1.png">
+          <span class="product-badge">New</span>
+          <img src="image/placeholder1.png" alt="Feeding Bottle" class="product-img" />
+          <div class="product-name">Feeding Bottle (BPA-free)</div>
+          <div class="product-desc">Safe, durable, and easy to clean. Perfect for newborns.</div>
+          <div class="product-qty">Qty: 17</div>
+          <div class="product-price">₱199.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="2" data-name="Toddler Clothing Set" data-price="349.00" data-img="image/placeholder2.png">
+          <span class="product-badge">Hot</span>
+          <img src="image/placeholder2.png" alt="Toddler Clothing Set" class="product-img" />
+          <div class="product-name">Toddler Clothing Set</div>
+          <div class="product-desc">Soft and comfortable. Stylish for play or outings.</div>
+          <div class="product-qty">Qty: 8</div>
+          <div class="product-price">₱349.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="3" data-name="Pacifier & Teether" data-price="89.00" data-img="image/placeholder3.png">
+          <span class="product-badge">New</span>
+          <img src="image/placeholder3.png" alt="Pacifier & Teether" class="product-img" />
+          <div class="product-name">Pacifier & Teether</div>
+          <div class="product-desc">Soothes your baby’s gums. BPA-free, easy to hold.</div>
+          <div class="product-qty">Qty: 13</div>
+          <div class="product-price">₱89.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="4" data-name="Soft Plush Toy" data-price="149.00" data-img="image/placeholder4.png">
+          <span class="product-badge">Sale</span>
+          <img src="image/placeholder4.png" alt="Plush Toy" class="product-img" />
+          <div class="product-name">Soft Plush Toy</div>
+          <div class="product-desc">Cuddly and safe. Perfect for nap or play.</div>
+          <div class="product-qty">Qty: 6</div>
+          <div class="product-price">₱149.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="5" data-name="Crib Bedding Set" data-price="399.00" data-img="image/placeholder5.png">
+          <span class="product-badge">Best Seller</span>
+          <img src="image/placeholder5.png" alt="Crib Bedding Set" class="product-img" />
+          <div class="product-name">Crib Bedding Set</div>
+          <div class="product-desc">Soft, hypoallergenic bedding for a restful sleep.</div>
+          <div class="product-qty">Qty: 10</div>
+          <div class="product-price">₱399.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+        <div class="product-card" data-id="6" data-name="Bottle Sterilizer" data-price="799.00" data-img="image/placeholder6.png">
+          <span class="product-badge">New</span>
+          <img src="image/placeholder6.png" alt="Sterilizer" class="product-img" />
+          <div class="product-name">Bottle Sterilizer</div>
+          <div class="product-desc">Quick, safe, and chemical-free. For peace of mind.</div>
+          <div class="product-qty">Qty: 4</div>
+          <div class="product-price">₱799.00</div>
+          <button class="product-add"><i class="ri-shopping-cart-2-line"></i> Add to Cart</button>
+        </div>
+      </div>
+    </section>
 
-        <section class="cart-section" id="cart">
-            <form id="cartForm" autocomplete="off" style="width:100%;max-width:450px;">
-                <div class="cart-form-title">Your Feedback</div>
-                <label for="cartName" class="cart-form-label">Name</label>
-                <input type="text" id="cartName" name="cartName" class="cart-form-input" placeholder="Your name" required>
+    <section class="info-sections" style="margin-bottom:2.5rem;">
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-search-eye-line"></i></div>
+        <div class="info-title">Browse</div>
+        <div class="info-desc">Find essentials and discover new products, easily and quickly.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-shopping-cart-2-line"></i></div>
+        <div class="info-title">Add to Cart</div>
+        <div class="info-desc">Select products and add to your cart in one click.</div>
+      </div>
+      <div class="info-card">
+        <div class="info-icon"><i class="ri-gift-line"></i></div>
+        <div class="info-title">Fast Delivery</div>
+        <div class="info-desc">Receive your order at your doorstep—fast, safe, and secure.</div>
+      </div>
+    </section>
 
-                <label for="cartDetails" class="cart-form-label">Feedback</label>
-                <textarea id="cartDetails" name="cartDetails" class="cart-form-textarea" placeholder="How can we improve, or what would you like to share?" required></textarea>
+    <!-- About Section -->
+    <h2 class="section-title about-title" id="about-section">About Us</h2>
+    <section class="about-section">
+      <strong>Our Story</strong><br><br>
+      Danica Manuel Retail Loft started with a simple mission: to offer parents reliable, affordable, and safe products for their little ones. Over the years, we have grown into a trusted name in Las Piñas for baby and children’s essentials.<br><br>
+      <strong>We value:</strong>
+      <ul style="margin-top:1rem; margin-bottom:1rem;">
+        <li><strong>Quality:</strong> Every product is handpicked to meet strict safety standards.</li>
+        <li><strong>Affordability:</strong> We believe every Filipino family deserves access to good products without breaking the budget.</li>
+        <li><strong>Care:</strong> Our customers are at the heart of everything we do.</li>
+      </ul>
+      <br>
+      From our loft in Barangay San Isidro, we proudly serve parents across Metro Manila and nearby provinces.<br><br>
+      <em>“Para sa bawat magulang, para sa bawat bata – nandito kami para tumulong.”</em>
+    </section>
 
-                <label for="cartContact" class="cart-form-label">Contact (Email/Phone)</label>
-                <input type="text" id="cartContact" name="cartContact" class="cart-form-input" placeholder="Your email or phone" required>
+    <!-- Contact Section -->
+    <h2 class="section-title contact-title" id="contact-section">Contact Us</h2>
+    <section class="contact-section">
+      <div class="contact-group">
+        <div class="contact-info">
+          <div class="contact-title">Store Address</div>
+          <span class="contact-label">Danica Manuel Retail Loft</span>
+          <span class="contact-label">#78 Pineapple Street, Barangay San Isidro</span>
+          <span class="contact-label">1740 City of Las Piñas, NCR, Philippines</span>
+          <br>
+          <div class="contact-title">Contact Number</div>
+          <a href="tel:+639194567023" class="contact-link">+63 919 456 7023</a>
+          <div class="contact-title">Email</div>
+          <a href="mailto:contact@danicamanuel-loft.com" class="contact-link">contact@danicamanuel-loft.com</a>
+          <div class="contact-title">Business Hours</div>
+          <span class="contact-label">Monday – Saturday: 8:00 AM – 6:00 PM</span>
+          <span class="contact-label">Sunday: Closed</span>
+        </div>
+        <form class="contact-form" id="contact-form" autocomplete="off">
+          <label for="contact-name">Name</label>
+          <input type="text" id="contact-name" name="contact-name" required placeholder="Your Name" />
+          <label for="contact-email">Email</label>
+          <input type="email" id="contact-email" name="contact-email" required placeholder="Your Email" />
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" name="contact-message" required placeholder="Your Message"></textarea>
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+      <div id="contact-success" style="display:none; color:var(--secondary); font-weight:700; text-align:center; margin-top:.5rem;">
+        Thank you for contacting us! We will get back to you soon.
+      </div>
+    </section>
 
-                <button type="submit" class="cart-form-btn">Send Feedback</button>
-                <div class="cart-form-success" id="cartSuccess" style="display:none;"></div>
-            </form>
-        </section>
+    <!-- Newsletter -->
+    <section class="info-sections" id="newsletter">
+      <div class="info-card" style="flex: 1 1 380px; max-width: 540px;">
+        <div class="info-icon"><i class="ri-mail-send-line"></i></div>
+        <div class="info-title">Stay in the Loop!</div>
+        <div class="info-desc" style="margin-bottom:1.1rem;">
+          Get the latest on new arrivals, offers, and parenting tips delivered straight to your inbox.
+        </div>
+        <form class="newsletter-form" autocomplete="off" style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center;">
+          <input type="email" class="newsletter-input" placeholder="Your email address" required
+            style="padding:.75rem 1.15rem; border-radius:.5rem; border:1px solid #e6ecf6; background:#f7f8fb; font-size:1rem; min-width:200px; color:var(--text);">
+          <button type="submit" class="newsletter-btn" style="background:var(--secondary);color:var(--white);border-radius:.5rem;padding:.75rem 1.9rem;font-weight:600;font-size:1rem;border:none;">Subscribe</button>
+        </form>
+      </div>
+    </section>
+  </main>
 
-        <section class="contact-section" id="contact">
-            <div class="contact-title">We're Here for You, Mom & Dad!</div>
-            <div class="contact-details">
-                <div>
-                    <div class="contact-data"><span>Store Address:</span> #78 Pineapple Street, Barangay San Isidro, 1740 City of Las Piñas, NCR, Philippines</div>
-                    <div class="contact-data"><span>Business Hours:</span> Mon–Sat: 9 AM–7 PM <br> Sunday: Closed (Family Day)</div>
-                </div>
-                <div>
-                    <div class="contact-data"><span>Phone:</span> <a href="tel:+639194567023" style="color:var(--brand-orange);text-decoration:none;">+63 919 456 7023</a></div>
-                    <div class="contact-data"><span>Email:</span> <a href="mailto:contact@danicamanuel-loft.com" style="color:var(--brand-orange);text-decoration:none;">contact@danicamanuel-loft.com</a></div>
-                    <div class="contact-data"><span>Website:</span> <a href="https://www.danicamanuel-loft.com" style="color:var(--brand-orange);text-decoration:none;">www.danicamanuel-loft.com</a></div>
-                </div>
-            </div>
-            <div class="contact-social">
-                <a href="viber://chat?number=%2B639194567023" title="Message us on Viber">📱</a>
-                <a href="https://facebook.com/danicamanuelretailloft" target="_blank" rel="noopener" title="Facebook Page">🔵</a>
-            </div>
-        </section>
-    </main>
-
-    <footer class="footer">
+  <footer class="footer" id="footer">
+    <div class="footer-container">
+      <div class="footer-brand">
         <div class="footer-logo">
-            <img src="LOGO.png" alt="Danica Manuel Retail Loft Logo">
+          <img src="image/LOGO.png" alt="Danica Manuel Retail Loft Logo" />
+          <span>DANICA MANUEL <span style="font-size:1.04em;font-weight:900;">RETAIL LOFT</span></span>
         </div>
+        <div class="footer-desc">
+          #78 Pineapple Street, Barangay San Isidro<br>
+          1740 City of Las Piñas, NCR, Philippines<br>
+          <br>
+          <a href="mailto:contact@danicamanuel-loft.com" class="footer-link">contact@danicamanuel-loft.com</a><br>
+          <a href="tel:+639194567023" class="footer-link">+63 919 456 7023</a>
+        </div>
+        <div class="footer-socials">
+          <a href="#" class="footer-social-link" aria-label="Facebook"><i class="ri-facebook-fill"></i></a>
+          <a href="#" class="footer-social-link" aria-label="Instagram"><i class="ri-instagram-line"></i></a>
+        </div>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Company</div>
         <div class="footer-links">
-            <a href="#privacy-policy">Privacy Policy</a>
-            <a href="#terms">Terms of Service</a>
-            <a href="#return-policy">Return Policy</a>
-            <a href="mailto:contact@danicamanuel-loft.com">Contact</a>
+          <a href="#about-section" class="footer-link">About Us</a>
+          <a href="#shop" class="footer-link">Products</a>
+          <a href="#contact-section" class="footer-link">Contact</a>
         </div>
-        <div class="footer-info">
-            Registered Business: Danica Manuel Retail Loft<br>
-            DTI Permit #: 046128990-LP &nbsp;|&nbsp; TIN: 011-892-334-000<br>
-            Barangay Business Clearance #: BBL-SISD-0924-2025<br>
-            VAT Registered. All items sold are VAT-inclusive.<br>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Customer Care</div>
+        <div class="footer-links">
+          <a href="#newsletter" class="footer-link">Newsletter</a>
+          <a href="privacy-policy.html" class="footer-link">Privacy Policy</a>
+          <a href="terms.html" class="footer-link">Terms of Service</a>
+          <a href="refund-policy.html" class="footer-link">Refund Policy</a>
         </div>
-        <div class="footer-policies">
-            <div class="footer-policy-section" id="privacy-policy">
-                <h4>Privacy Policy</h4>
-                <p>
-                    We respect your privacy and are committed to protecting your personal information. Any details you provide will only be used for order processing and customer support. We do not share or sell your information to third parties. For questions, contact us via email at <a href="mailto:privacy@danicamanuel-loft.com" style="color:var(--brand-orange);text-decoration:underline;">privacy@danicamanuel-loft.com</a>.
-                </p>
+      </div>
+      <div class="footer-links-group">
+        <div class="footer-links-title">Business Hours</div>
+        <div class="footer-links">
+          <span class="footer-link">Mon–Sat: 8:00 AM – 6:00 PM</span>
+          <span class="footer-link">Sunday: Closed</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      &copy; <span id="footer-year"></span> Danica Manuel Retail Loft. All rights reserved.
+    </div>
+  </footer>
+
+  <button class="scroll-top-btn" id="scroll-top-btn" aria-label="Scroll to top"><i class="ri-arrow-up-line"></i></button>
+
+  <script>
+    // Navigation for mobile
+    const navToggle = document.getElementById('nav-toggle');
+    const navClose = document.getElementById('nav-close');
+    const navList = document.getElementById('nav-list');
+    navToggle && navToggle.addEventListener('click', () => {
+      navList.classList.add('open');
+      navClose.style.display = 'block';
+    });
+    navClose && navClose.addEventListener('click', () => {
+      navList.classList.remove('open');
+      navClose.style.display = 'none';
+    });
+    document.querySelectorAll('.nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        navList.classList.remove('open');
+        navClose.style.display = 'none';
+      });
+    });
+
+    // Scroll-to-section for nav
+    document.getElementById('nav-home').addEventListener('click', function(e){
+      e.preventDefault();
+      document.getElementById('home').scrollIntoView({behavior: 'smooth'});
+    });
+    document.getElementById('nav-shop').addEventListener('click', function(e){
+      e.preventDefault();
+      document.getElementById('shop').scrollIntoView({behavior: 'smooth'});
+    });
+    document.getElementById('nav-about').addEventListener('click', function(e){
+      e.preventDefault();
+      document.getElementById('about-section').scrollIntoView({behavior: 'smooth'});
+    });
+    document.getElementById('nav-contact').addEventListener('click', function(e){
+      e.preventDefault();
+      document.getElementById('contact-section').scrollIntoView({behavior: 'smooth'});
+    });
+    document.getElementById('shop-now-btn').addEventListener('click', function(e){
+      e.preventDefault();
+      document.getElementById('shop').scrollIntoView({behavior: 'smooth'});
+    });
+
+    // Cart sidebar logic
+    const cartBtn = document.getElementById('cart-btn');
+    const cartSidebar = document.getElementById('cart-sidebar');
+    const cartCloseBtn = document.getElementById('cart-close');
+    const cartOverlay = document.getElementById('cart-overlay');
+    function openCart() {
+      cartSidebar.classList.add('open');
+      cartOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeCart() {
+      cartSidebar.classList.remove('open');
+      cartOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    cartBtn && cartBtn.addEventListener('click', openCart);
+    cartCloseBtn && cartCloseBtn.addEventListener('click', closeCart);
+    cartOverlay && cartOverlay.addEventListener('click', closeCart);
+
+    // Add to cart logic
+    let cart = [];
+    function updateCartSidebar() {
+      const cartItemsEl = document.getElementById('cart-items');
+      cartItemsEl.innerHTML = '';
+      let total = 0, count = 0;
+      cart.forEach(item => {
+        total += item.price * item.qty;
+        count += item.qty;
+        // Cart item HTML
+        const cartItem = document.createElement('div');
+        cartItem.className = 'cart-item';
+        cartItem.innerHTML = `
+          <img src="${item.img}" alt="${item.name}" class="cart-item-img">
+          <div class="cart-item-details">
+            <div class="cart-item-title">${item.name}</div>
+            <div class="cart-item-price">₱${item.price.toFixed(2)}</div>
+            <div class="cart-item-qty">
+              <button class="cart-item-qty-btn" aria-label="Decrease quantity"><i class="ri-subtract-line"></i></button>
+              <span>${item.qty}</span>
+              <button class="cart-item-qty-btn" aria-label="Increase quantity"><i class="ri-add-line"></i></button>
+              <button class="cart-item-remove" aria-label="Remove item"><i class="ri-delete-bin-6-line"></i></button>
             </div>
-            <div class="footer-policy-section" id="terms">
-                <h4>Terms of Service</h4>
-                <p>
-                    By using our website or shopping in-store, you agree to follow all store policies and respect our staff and other customers. Product availability and prices are subject to change without notice. Payments must be made via approved methods only.
-                </p>
-            </div>
-            <div class="footer-policy-section" id="return-policy">
-                <h4>Return Policy</h4>
-                <p>
-                    Returns and exchanges are accepted within 7 days of purchase with a valid receipt and unopened packaging. Delivery fees are non-refundable. For assistance, please contact us at <a href="mailto:returns@danicamanuel-loft.com" style="color:var(--brand-orange);text-decoration:underline;">returns@danicamanuel-loft.com</a>.
-                </p>
-            </div>
-        </div>
-        <div class="footer-legal">
-            &copy; 2025 Danica Manuel Retail Loft. All Rights Reserved.
-        </div>
-    </footer>
-
-    <script>
-        // Burger Button Functionality
-        const burgerBtn = document.getElementById('burgerBtn');
-        const navUl = document.getElementById('main-nav');
-        burgerBtn.addEventListener('click', function() {
-            burgerBtn.classList.toggle('open');
-            navUl.classList.toggle('open');
-            burgerBtn.setAttribute('aria-expanded', navUl.classList.contains('open'));
+          </div>
+        `;
+        cartItem.querySelector('.cart-item-qty-btn:nth-child(1)').addEventListener('click', () => {
+          if(item.qty > 1){ item.qty--; updateCartSidebar(); }
         });
-        document.addEventListener('click', function(e) {
-            if(window.innerWidth <= 650 &&
-                !navUl.contains(e.target) &&
-                !burgerBtn.contains(e.target) &&
-                navUl.classList.contains('open')) {
-                navUl.classList.remove('open');
-                burgerBtn.classList.remove('open');
-            }
+        cartItem.querySelector('.cart-item-qty-btn:nth-child(3)').addEventListener('click', () => {
+          item.qty++; updateCartSidebar();
         });
-
-        // Product Categories Data
-        const products = [
-            {
-                key: "newborn",
-                title: "Newborn & Infant Essentials",
-                price: 650,
-                img: "assets/newborn.jpg"
-            },
-            {
-                key: "toddler",
-                title: "Toddler Must-Haves",
-                price: 950,
-                img: "assets/toddler.jpg"
-            },
-            {
-                key: "nursery",
-                title: "Nursery & Bedroom",
-                price: 1850,
-                img: "assets/nursery.jpg"
-            },
-            {
-                key: "gear",
-                title: "On-The-Go Gear",
-                price: 2450,
-                img: "assets/gear.jpg"
-            },
-            {
-                key: "bundles",
-                title: "Bundles & Gift Sets",
-                price: 1100,
-                img: "assets/bundles.jpg"
-            }
-        ];
-
-        // Cart Logic
-        let cart = [];
-
-        // Cart Count and Preview Update
-        function updateCartDisplay() {
-            const cartCount = document.getElementById('cart-count');
-            cartCount.textContent = cart.reduce((a, b) => a + b.qty, 0);
-
-            // For form preview (feedback section - now shows nothing)
-            // For popup
-            updateCartPopup();
-        }
-
-        document.querySelectorAll('.add-to-cart').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const card = btn.closest('.category-card');
-                const key = card.getAttribute('data-category');
-                const title = btn.getAttribute('data-title');
-                const price = Number(btn.getAttribute('data-price'));
-                let item = cart.find(x => x.key === key);
-                if (item) {
-                    item.qty += 1;
-                } else {
-                    cart.push({ key, title, qty: 1, price: price });
-                }
-                updateCartDisplay();
-                const addedMsg = card.querySelector('.category-added');
-                addedMsg.textContent = "Added to cart!";
-                addedMsg.style.display = "block";
-                setTimeout(() => { addedMsg.style.display = "none"; }, 1200);
-            });
+        cartItem.querySelector('.cart-item-remove').addEventListener('click', () => {
+          cart = cart.filter(ci => ci.id !== item.id);
+          updateCartSidebar();
         });
-
-        document.querySelectorAll('.checkout').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const card = btn.closest('.category-card');
-                const key = card.getAttribute('data-category');
-                const title = btn.getAttribute('data-title');
-                const price = Number(btn.getAttribute('data-price'));
-                let item = cart.find(x => x.key === key);
-                if (item) {
-                    item.qty += 1;
-                } else {
-                    cart.push({ key, title, qty: 1, price: price });
-                }
-                updateCartDisplay();
-                document.getElementById('cart').scrollIntoView({ behavior: 'smooth' });
-            });
+        cartItemsEl.appendChild(cartItem);
+      });
+      document.getElementById('cart-items-count').textContent = count;
+      document.getElementById('cart-total').textContent = '₱' + total.toFixed(2);
+    }
+    function addToCart(product) {
+      const found = cart.find(i => i.id === product.id);
+      if(found){ found.qty++; }
+      else{ cart.push({...product, qty:1}); }
+      updateCartSidebar();
+      // Do NOT openCart here (no auto notification)
+    }
+    document.querySelectorAll('.product-add').forEach((btn, index) => {
+      btn.addEventListener('click', function() {
+        const card = btn.closest('.product-card');
+        addToCart({
+          id: card.getAttribute('data-id'),
+          name: card.getAttribute('data-name'),
+          price: parseFloat(card.getAttribute('data-price')),
+          img: card.getAttribute('data-img')
         });
+      });
+    });
 
-        // Feedback Form
-        document.getElementById('cartForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const name = document.getElementById('cartName').value.trim();
-            const contact = document.getElementById('cartContact').value.trim();
-            const details = document.getElementById('cartDetails').value.trim();
-            let message = `Name: ${name}\nContact: ${contact}\nFeedback: ${details}`;
-            // Simulate success
-            document.getElementById('cartSuccess').textContent = 'Thank you! Your feedback has been sent.';
-            document.getElementById('cartSuccess').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('cartSuccess').style.display = 'none';
-            }, 3500);
-            document.getElementById('cartForm').reset();
-        });
+    // Scroll-to-top button
+    const scrollTopBtn = document.getElementById('scroll-top-btn');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 350) {
+        scrollTopBtn.classList.add('visible');
+      } else {
+        scrollTopBtn.classList.remove('visible');
+      }
+    });
+    scrollTopBtn.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
 
-        // --- CART POPUP LOGIC ---
-        function updateCartPopup() {
-            const cartPopupListItems = document.getElementById('cartPopupListItems');
-            const cartPopupTotal = document.getElementById('cartPopupTotal');
-            const cartPopupEmpty = document.getElementById('cartPopupEmpty');
-            cartPopupListItems.innerHTML = '';
-            if (cart.length === 0) {
-                cartPopupEmpty.style.display = 'block';
-                cartPopupTotal.textContent = '';
-            } else {
-                cartPopupEmpty.style.display = 'none';
-                let total = 0;
-                cart.forEach(item => {
-                    cartPopupListItems.innerHTML += `<li>
-                        <span>${item.title}</span>
-                        <span>₱${item.price.toLocaleString()} x${item.qty}</span>
-                    </li>`;
-                    total += item.price * item.qty;
-                });
-                cartPopupTotal.textContent = "Total: ₱" + total.toLocaleString();
-            }
-        }
+    // Footer year
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
 
-        // Open/Close Cart Popup
-        const openCartPopupBtn = document.getElementById('openCartPopup');
-        const cartPopupOverlay = document.getElementById('cartPopupOverlay');
-        const cartPopup = document.getElementById('cartPopup');
-        const cartPopupCloseBtn = document.getElementById('cartPopupCloseBtn');
-        const cartPopupCheckoutBtn = document.getElementById('cartPopupCheckoutBtn');
+    // Newsletter placeholder
+    document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      alert('Thank you for subscribing! (This is a placeholder.)');
+      this.reset();
+    });
 
-        openCartPopupBtn.addEventListener('click', function(e) {
-            cartPopupOverlay.style.display = 'block';
-            cartPopup.style.display = 'flex';
-            updateCartPopup();
-        });
-        cartPopupCloseBtn.addEventListener('click', function() {
-            cartPopupOverlay.style.display = 'none';
-            cartPopup.style.display = 'none';
-        });
-        cartPopupOverlay.addEventListener('click', function() {
-            cartPopupOverlay.style.display = 'none';
-            cartPopup.style.display = 'none';
-        });
-        cartPopupCheckoutBtn.addEventListener('click', function() {
-            cartPopupOverlay.style.display = 'none';
-            cartPopup.style.display = 'none';
-            window.location.href = "order-sumarry.html";
-        });
+    // Contact form placeholder
+    document.getElementById('contact-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      document.getElementById('contact-success').style.display = 'block';
+      this.reset();
+      setTimeout(function(){
+        document.getElementById('contact-success').style.display = 'none';
+      }, 3500);
+    });
 
-        updateCartDisplay();
-    </script>
+    // Checkout button functionality
+    document.getElementById('checkout-btn').addEventListener('click', function() {
+      window.location.href = "order-summary.html";
+    });
+  </script>
 </body>
 </html>
