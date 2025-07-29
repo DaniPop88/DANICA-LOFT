@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Summary – Danica Manuel Retail Loft</title>
+  <link rel="icon" type="image/png" href="image/FAVICON.png" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@700&display=swap" rel="stylesheet" />
+  <!-- Remixicon for icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #111111;
+      --secondary: #ff3c00;
+      --accent: #ffb366;
+      --bg: #f7f8fb;
+      --text: #222a36;
+      --muted: #6c7a91;
+      --white: #fff;
+      --radius: 1.1rem;
+      --shadow: 0 8px 32px 0 rgba(55, 55, 55, 0.07);
+      --transition: .22s cubic-bezier(.4,0,.2,1);
+      --border: 1px solid #e8e9ef;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    a { text-decoration: none; color: inherit; transition: color var(--transition);}
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; border-radius: .5rem; }
+    button, input, select, textarea { font-family: inherit; outline: none; border: none; background: none; }
+    /* Header */
+    .header {
+      width: 100%;
+      background: var(--white);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 99;
+      transition: box-shadow var(--transition);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 2rem;
+    }
+    .loft-logo {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+    }
+    .loft-logo-img {
+      width: 48px;
+      height: 48px;
+      background: none;
+      border-radius: .4rem;
+      object-fit: contain;
+      box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+      margin-right: .5rem;
+    }
+    .loft-logo-text {
+      font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: var(--primary);
+      letter-spacing: 2px;
+      margin-top: 2px;
+    }
+    .nav-list {
+      display: flex;
+      align-items: center;
+      gap: 2.3rem;
+    }
+    .nav-link {
+      position: relative;
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 1rem;
+      padding: 0.2rem 0;
+      transition: color var(--transition);
+    }
+    .nav-link.active, .nav-link:hover { color: var(--secondary); }
+    .nav-link.active::after {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--secondary);
+      border-radius: 2px;
+      margin: 0.16rem auto 0;
+      transition: width var(--transition);
+    }
+    /* Responsive Nav */
+    @media (max-width: 700px) {
+      .nav {
+        padding: 1rem 1rem;
+      }
+      .nav-list {
+        gap: 1.3rem;
+      }
+      .loft-logo-text {
+        font-size: 1.05rem;
+      }
+    }
+    /* Main Content */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2.5rem 1.2rem 3rem;
+    }
+    .summary-container {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 2.2rem 1.2rem;
+      margin-bottom: 2.5rem;
+      margin-top: 2.5rem;
+    }
+    .summary-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--secondary);
+      font-family: 'Montserrat', 'Inter', Arial, sans-serif;
+      letter-spacing: 1px;
+      margin-bottom: .6rem;
+      text-align: center;
+    }
+    .summary-step {
+      font-size: 1.17rem;
+      color: var(--primary);
+      font-weight: 600;
+      margin-bottom: .5rem;
+      margin-top: 2rem;
+    }
+    .summary-desc {
+      font-size: 1.08rem;
+      color: var(--muted);
+      margin-bottom: 1.2rem;
+      text-align: center;
+    }
+    .order-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem auto;
+      background: #f7f8fb;
+      border-radius: .9rem;
+      overflow: hidden;
+      box-shadow: 0 2px 8px 0 rgba(55,55,55,0.07);
+    }
+    .order-table th, .order-table td {
+      padding: .85rem .7rem;
+      text-align: left;
+      font-size: 1rem;
+    }
+    .order-table th {
+      background: var(--bg);
+      color: var(--primary);
+      font-weight: 700;
+    }
+    .order-table td {
+      background: var(--white);
+      color: var(--text);
+      border-bottom: 1px solid #ebebf4;
+    }
+    .order-table tr:last-child td { border-bottom: none; }
+    .order-total-row td {
+      font-weight: 700;
+      color: var(--secondary);
+      font-size: 1.07rem;
+      background: #fff9f3;
+    }
+    .order-customer-details {
+      margin: 2rem 0 1.2rem 0;
+      padding: 1.2rem;
+      background: #fffaf6;
+      border-radius: .7rem;
+      box-shadow: 0 2px 8px 0 rgba(255,179,102,0.08);
+      font-size: 1.05rem;
+      color: var(--primary);
+    }
+    .order-customer-details strong {
+      color: var(--secondary);
+      font-weight: 700;
+    }
+    .order-form-section {
+      margin: 2rem 0;
+      padding: 1.1rem 1rem;
+      background: #f7f8fb;
+      border-radius: .7rem;
+      box-shadow: 0 2px 8px 0 rgba(55,55,55,0.06);
+      font-size: 1.08rem;
+    }
+    .order-form-group {
+      margin-bottom: 1.4rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .order-form-label {
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: .4rem;
+      display: block;
+      font-size: 1rem;
+    }
+    .order-form-input,
+    .order-form-select,
+    .order-form-textarea {
+      width: 100%;
+      padding: .7rem 1rem;
+      border-radius: .5rem;
+      border: 1px solid #e6ecf6;
+      background: #fff;
+      font-size: 1.02rem;
+      color: var(--primary);
+      margin-bottom: .5rem;
+      box-sizing: border-box;
+      transition: border var(--transition);
+    }
+    .order-form-input:focus,
+    .order-form-select:focus,
+    .order-form-textarea:focus {
+      border-color: var(--secondary);
+    }
+    .order-form-btn {
+      background: var(--secondary);
+      color: var(--white);
+      border-radius: .5rem;
+      padding: .9rem 2rem;
+      font-weight: 700;
+      font-size: 1.07rem;
+      border: none;
+      transition: background var(--transition);
+      cursor: pointer;
+      margin-top: .6rem;
+      box-shadow: 0 2px 8px 0 rgba(255,179,102,0.08);
+      display: block;
+      width: 100%;
+      max-width: 260px;
+    }
+    .order-form-btn:hover {
+      background: var(--primary);
+    }
+    .order-success {
+      display: none;
+      margin: 2rem 0 1rem 0;
+      background: #eafff5;
+      color: #111;
+      border-left: 6px solid var(--secondary);
+      border-radius: .7rem;
+      padding: 1.6rem 1.2rem;
+      font-size: 1.14rem;
+      box-shadow: 0 2px 8px 0 rgba(55,55,55,0.09);
+      animation: fadeIn .8s;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(18px);}
+      to { opacity: 1; transform: translateY(0);}
+    }
+    .order-success strong {
+      color: var(--secondary);
+      font-weight: 700;
+    }
+    .order-success span {
+      display: block;
+      margin-top: .9rem;
+      font-size: .97rem;
+      color: var(--primary);
+    }
+    .important-note {
+      background: #fff1e6;
+      color: var(--secondary);
+      border-radius: .7rem;
+      padding: 1rem 1.2rem;
+      font-weight: 600;
+      font-size: 1.03rem;
+      margin: 1.4rem 0 .35rem 0;
+      box-shadow: 0 2px 8px 0 rgba(255,179,102,0.08);
+    }
+    /* Responsive Design */
+    @media (max-width: 900px) {
+      main { padding: 1.2rem .3rem 2rem;}
+      .summary-container { padding: 1.4rem .5rem;}
+      .order-table th, .order-table td { padding: .7rem .4rem;}
+    }
+    @media (max-width: 600px) {
+      .order-form-group { flex-direction: column; gap: 1rem;}
+      .order-customer-details, .order-form-section, .order-success, .important-note { padding: .7rem .5rem;}
+      .summary-title { font-size: 1.25rem;}
+    }
+  </style>
+</head>
+<body>
+  <header class="header" id="header">
+    <nav class="nav">
+      <a href="index.html" class="loft-logo">
+        <img src="image/LOGO.png" alt="Danica Manuel Retail Loft Logo" class="loft-logo-img" />
+        <span class="loft-logo-text">DANICA MANUEL <br><span style="font-size:1.04em;font-weight:900;letter-spacing:0px;">RETAIL LOFT</span></span>
+      </a>
+      <ul class="nav-list">
+        <li><a href="index.html" class="nav-link">Home</a></li>
+        <li><a href="shop.html" class="nav-link">Shop</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="summary-container">
+      <h1 class="summary-title">Order Summary</h1>
+      <div class="summary-desc">
+        Please review your order below and provide your details to proceed.<br>
+        Our team will connect with you to finalize specifics such as availability, colors, and other preferences.
+      </div>
+      <div class="summary-step">Your Cart</div>
+      <table class="order-table" id="order-table">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Qty</th>
+            <th>Price</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody id="order-items">
+          <!-- Items will be inserted by JS -->
+        </tbody>
+        <tfoot>
+          <tr class="order-total-row">
+            <td colspan="3">Total</td>
+            <td id="order-total">₱0.00</td>
+          </tr>
+        </tfoot>
+      </table>
+      <div class="order-customer-details" id="customer-details">
+        <span><strong>Delivery Information</strong></span>
+        <span id="display-customer"></span>
+      </div>
+      <form class="order-form-section" id="order-form" autocomplete="off">
+        <div class="order-form-group">
+          <div style="flex:1;">
+            <label class="order-form-label" for="customer-name">Full Name</label>
+            <input class="order-form-input" type="text" id="customer-name" name="customer-name" required placeholder="Enter your full name"/>
+          </div>
+          <div style="flex:1;">
+            <label class="order-form-label" for="customer-phone">Phone</label>
+            <input class="order-form-input" type="tel" id="customer-phone" name="customer-phone" required placeholder="e.g. +63 912 345 6789"/>
+          </div>
+        </div>
+        <div class="order-form-group">
+          <div style="flex:1;">
+            <label class="order-form-label" for="customer-email">Email</label>
+            <input class="order-form-input" type="email" id="customer-email" name="customer-email" required placeholder="you@email.com"/>
+          </div>
+          <div style="flex:1;">
+            <label class="order-form-label" for="customer-address">Delivery Address</label>
+            <input class="order-form-input" type="text" id="customer-address" name="customer-address" required placeholder="Street, Barangay, City"/>
+          </div>
+        </div>
+        <div class="order-form-group">
+          <div style="flex:1;">
+            <label class="order-form-label" for="customer-payment">Preferred Payment Method</label>
+            <select class="order-form-select" id="customer-payment" name="customer-payment" required>
+              <option value="" disabled selected>Select payment method</option>
+              <option value="GCash">GCash</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="COD">Cash on Delivery</option>
+            </select>
+          </div>
+          <div style="flex:1;">
+            <label class="order-form-label" for="customer-note">Order Notes</label>
+            <textarea class="order-form-textarea" id="customer-note" name="customer-note" rows="2" placeholder="Any requests or instructions?" style="resize:vertical"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="order-form-btn">Submit Order</button>
+      </form>
+      <div class="order-success" id="order-success">
+        <strong>Your order has been submitted!</strong>
+        <span>
+          Thank you for shopping with Danica Manuel Retail Loft.<br>
+          One of our team members will reach out to you to confirm product details (such as color and availability) and finalize your order.<br>
+          Please review and confirm these details once contacted.<br>
+          Upon confirmation, a payment link will be sent according to your selected payment option.<br>
+          <span class="important-note">
+            Please complete your payment within 24 hours of receiving the payment link to keep your order active.<br>
+            Orders unpaid after 24 hours will be automatically cancelled.
+          </span>
+        </span>
+      </div>
+    </section>
+  </main>
+  <footer class="footer" id="footer" style="background:var(--primary);color:var(--white);padding:2.6rem 0 1.2rem;margin-top:2.7rem;border-radius:1.1rem 1.1rem 0 0;">
+    <div class="footer-container" style="max-width:1200px;margin:0 auto;display:flex;flex-wrap:wrap;gap:2.2rem;justify-content:space-between;align-items:flex-start;padding:0 2rem;">
+      <div class="footer-brand" style="flex:1 1 240px;margin-bottom:1.6rem;">
+        <div class="footer-logo" style="display:flex;align-items:center;gap:.5rem;margin-bottom:0.6rem;font-family:'Montserrat','Inter',Arial,sans-serif;font-size:1.18rem;font-weight:700;">
+          <img src="image/LOGO.png" alt="Danica Manuel Retail Loft Logo" style="width:32px;height:32px;background:none;border-radius:.2rem;"/>
+          <span>DANICA MANUEL <span style="font-size:1.04em;font-weight:900;">RETAIL LOFT</span></span>
+        </div>
+        <div class="footer-desc" style="color:#e9efff;font-size:.99rem;margin-bottom:.7rem;">
+          #78 Pineapple Street, Barangay San Isidro<br>
+          1740 City of Las Piñas, NCR, Philippines<br>
+          <br>
+          <a href="mailto:contact@danicamanuel-loft.com" class="footer-link" style="color:#e9efff;">contact@danicamanuel-loft.com</a><br>
+          <a href="tel:+639194567023" class="footer-link" style="color:#e9efff;">+63 919 456 7023</a>
+        </div>
+        <div class="footer-socials" style="display:flex;gap:1.1rem;margin-top:.6rem;">
+          <a href="#" class="footer-social-link" aria-label="Facebook" style="color:var(--secondary);background:var(--white);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:1.17rem;width:2rem;height:2rem;transition:background .22s,color .22s;border:1px solid #e9efff;"><i class="ri-facebook-fill"></i></a>
+          <a href="#" class="footer-social-link" aria-label="Instagram" style="color:var(--secondary);background:var(--white);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:1.17rem;width:2rem;height:2rem;transition:background .22s,color .22s;border:1px solid #e9efff;"><i class="ri-instagram-line"></i></a>
+        </div>
+      </div>
+      <div class="footer-links-group" style="flex:1 1 150px;margin-bottom:1.8rem;">
+        <div class="footer-links-title" style="font-size:1.06rem;font-weight:700;margin-bottom:.38rem;letter-spacing:.5px;">Company</div>
+        <div class="footer-links" style="display:flex;flex-direction:column;gap:.33rem;">
+          <a href="about.html" class="footer-link" style="color:#e9efff;">About Us</a>
+          <a href="shop.html" class="footer-link" style="color:#e9efff;">Products</a>
+          <a href="contact.html" class="footer-link" style="color:#e9efff;">Contact</a>
+        </div>
+      </div>
+      <div class="footer-links-group" style="flex:1 1 150px;margin-bottom:1.8rem;">
+        <div class="footer-links-title" style="font-size:1.06rem;font-weight:700;margin-bottom:.38rem;letter-spacing:.5px;">Customer Care</div>
+        <div class="footer-links" style="display:flex;flex-direction:column;gap:.33rem;">
+          <a href="privacy-policy.html" class="footer-link" style="color:#e9efff;">Privacy Policy</a>
+          <a href="terms.html" class="footer-link" style="color:#e9efff;">Terms of Service</a>
+          <a href="refund-policy.html" class="footer-link" style="color:#e9efff;">Refund Policy</a>
+        </div>
+      </div>
+      <div class="footer-links-group" style="flex:1 1 150px;margin-bottom:1.8rem;">
+        <div class="footer-links-title" style="font-size:1.06rem;font-weight:700;margin-bottom:.38rem;letter-spacing:.5px;">Business Hours</div>
+        <div class="footer-links" style="display:flex;flex-direction:column;gap:.33rem;">
+          <span class="footer-link" style="color:#e9efff;">Mon–Sat: 8:00 AM – 6:00 PM</span>
+          <span class="footer-link" style="color:#e9efff;">Sunday: Closed</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom" style="text-align:center;font-size:.96rem;color:#e9efff;margin-top:1.5rem;opacity:.85;">
+      &copy; <span id="footer-year"></span> Danica Manuel Retail Loft. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // Update footer year
+    document.getElementById('footer-year').textContent = new Date().getFullYear();
+
+    // DEMO order data (replace with dynamic cart items if integrated)
+    const demoOrder = [
+      { name: "Feeding Bottle (BPA-free)", qty: 2, price: 199.00 },
+      { name: "Toddler Clothing Set", qty: 1, price: 349.00 },
+      { name: "Pacifier & Teether", qty: 3, price: 89.00 }
+    ];
+    // Render order table
+    function renderOrderTable(order) {
+      let total = 0;
+      const tbody = document.getElementById('order-items');
+      tbody.innerHTML = '';
+      order.forEach(item => {
+        const subtotal = item.qty * item.price;
+        total += subtotal;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.name}</td>
+          <td>${item.qty}</td>
+          <td>₱${item.price.toFixed(2)}</td>
+          <td>₱${subtotal.toFixed(2)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      document.getElementById('order-total').textContent = '₱' + total.toFixed(2);
+    }
+    renderOrderTable(demoOrder);
+
+    // Order form logic
+    const orderForm = document.getElementById('order-form');
+    const customerDetails = document.getElementById('display-customer');
+    const orderSuccess = document.getElementById('order-success');
+    orderForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      // Display accepted customer details
+      const name = document.getElementById('customer-name').value.trim();
+      const phone = document.getElementById('customer-phone').value.trim();
+      const email = document.getElementById('customer-email').value.trim();
+      const addr = document.getElementById('customer-address').value.trim();
+      const payment = document.getElementById('customer-payment').value;
+      const note = document.getElementById('customer-note').value.trim();
+      let details = `<strong>Name:</strong> ${name}<br>
+        <strong>Phone:</strong> ${phone}<br>
+        <strong>Email:</strong> ${email}<br>
+        <strong>Address:</strong> ${addr}<br>
+        <strong>Payment Method:</strong> ${payment}<br>`;
+      if (note) details += `<strong>Order Notes:</strong> ${note}<br>`;
+      customerDetails.innerHTML = details;
+      orderSuccess.style.display = 'block';
+      orderForm.style.display = 'none';
+      window.scrollTo({ top: orderSuccess.offsetTop - 60, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>
